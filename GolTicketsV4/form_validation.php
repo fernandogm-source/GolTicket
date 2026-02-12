@@ -8,7 +8,7 @@ $old = $_POST;
 // ========================
 // RECIBIR DATOS
 // ========================
-$id_evento=$_POST['id_evento']??null;
+$event_id=$_POST['event_id']??null;
 $event_name = test_input($_POST['event_name'] ?? '');
 $event_description = test_input($_POST['event_description'] ?? '');
 $event_organization = test_input($_POST['event_organization'] ?? '');
@@ -178,12 +178,14 @@ if (!in_array($event_state, $estadosValidos)) {
     $errores['selected_state'] = "Tipo inválido";
 }
 
-/* ========= SI HAY ERRORES ========= */
-if ($errores) {
-  $_SESSION['errores'] = $errores;
-  $_SESSION['old'] = $old;
-  header("Location: index.php");
-  exit;
+// ========================
+// SI ERRORES -> volver
+// ========================
+if($errores){
+    $_SESSION['errores']=$errores;
+    $_SESSION['old']=$old;
+    header("Location: ".($id?"edit.php?id=$id":"create.php"));
+    exit;
 }
 
 
@@ -197,65 +199,65 @@ function test_input($data) {
 // ========================
 // PREPARAR PARA DB
 // ========================
-if($id_evento){
+if($event_id){
     $sql = "UPDATE `eventos` 
-    SET `nombre_evento`=:nombre_evento,`descripcion_evento`=:descripcion_evento,`organizacion_evento`=:organizacion_evento
-    ,`fecha_evento`=:fecha_evento,`hora_evento`=:hora_evento,`lugar_evento`=:lugar_evento
-    ,`ciudad_evento`=:ciudad_evento,`duracion_evento`=:duracion_evento,`capacidad_evento`=:capacidad_evento,`precio_evento`=:precio_evento
-    ,`entradas_disponibles_evento`=:entradas_disponibles_evento,`servicios_disponibles_evento`=:servicios_disponibles_evento
-    ,`equipo_local`=:equipo_local,`equipo_visitante`=:equipo_visitante,`tipo_entrada_evento`=:tipo_entrada_evento,`tipo_partido_evento`=:tipo_partido_evento
-    ,`estado_evento`=:estado_evento 
-    WHERE id_evento=:id_evento";
+    SET `event_name`=:event_name,`event_description`=:event_description,`event_organization`=:event_organization
+    ,`event_date`=:event_date,`event_hour`=:event_hour,`event_place`=:event_place
+    ,`event_city`=:event_city,`event_duration`=:event_duration,`event_capacity`=:event_capacity,`event_price`=:event_price
+    ,`event_disponibility`=:event_disponibility,`event_services`=:event_services
+    ,`event_local`=:event_local,`event_visitor`=:event_visitor,`ticket_type`=:ticket_type,`event_competition`=:event_competition
+    ,`event_state`=:event_state 
+    WHERE event_id=:event_id";
     
     $stmt = $conn->prepare($sql);
      echo "<pre>";
      echo "SQL: $sql\n";
      print_r([
-      ':nombre_evento'                  => $event_name,
-      ':descripcion_evento'             => $event_description,
-      ':organizacion_evento'            => $event_organization,
-      ':fecha_evento'                   => $event_date,
-      ':hora_evento'                    => $event_hour,
-      ':lugar_evento'                   => $event_place,
-      ':ciudad_evento'                  => $event_city,
-      ':duracion_evento'                => $event_duration,
-      ':capacidad_evento'               => $event_capacity,
-      ':precio_evento'                  => $event_price,
-      ':entradas_disponibles_evento'    => $event_disponibility,
-      ':servicios_disponibles_evento'   => json_encode($event_services),
-      ':equipo_local'                   => $event_local,
-      ':equipo_visitante'               => $event_visitor,
-      ':tipo_entrada_evento'            => json_encode($event_ticket_type),
-      ':tipo_partido_evento'            => $event_type,
-      ':estado_evento'                  => $event_state
+      ':event_name'                   => $event_name,
+      ':event_description'            => $event_description,
+      ':event_organization'           => $event_organization,
+      ':event_date'                   => $event_date,
+      ':event_hour'                   => $event_hour,
+      ':event_place'                  => $event_place,
+      ':event_city'                   => $event_city,
+      ':event_duration'               => $event_duration,
+      ':event_capacity'               => $event_capacity,
+      ':event_price'                  => $event_price,
+      ':event_disponibility'          => $event_disponibility,
+      ':event_services'               => json_encode($event_services),
+      ':event_local'                  => $event_local,
+      ':event_visitor'                => $event_visitor,
+      ':ticket_type'                  => json_encode($event_ticket_type),
+      ':event_competition'            => $event_type,
+      ':event_state'                  => $event_state
      ]);
      echo "</pre>";
      exit;
 /*     $stmt->execute([
-      ':nombre_evento'                  => $event_name,
-      ':descripcion_evento'             => $event_description,
-      ':organizacion_evento'            => $event_organization,
-      ':fecha_evento'                   => $event_date,
-      ':hora_evento'                    => $event_hour,
-      ':lugar_evento'                   => $event_place,
-      ':ciudad_evento'                  => $event_city,
-      ':duracion_evento'                => $event_duration,
-      ':capacidad_evento'               => $event_capacity,
-      ':precio_evento'                  => $event_price,
-      ':entradas_disponibles_evento'    => $event_disponibility,
-      ':servicios_disponibles_evento'   => json_encode($event_services),
-      ':equipo_local'                   => $event_local,
-      ':equipo_visitante'               => $event_visitor,
-      ':tipo_entrada_evento'            => json_encode($event_ticket_type),
-      ':tipo_partido_evento'            => $event_type,
-      ':estado_evento'                  => $event_state
+      ':event_name'                   => $event_name,
+      ':event_description'            => $event_description,
+      ':event_organization'           => $event_organization,
+      ':event_date'                   => $event_date,
+      ':event_hour'                   => $event_hour,
+      ':event_place'                  => $event_place,
+      ':event_city'                   => $event_city,
+      ':event_duration'               => $event_duration,
+      ':event_capacity'               => $event_capacity,
+      ':event_price'                  => $event_price,
+      ':event_disponibility'          => $event_disponibility,
+      ':event_services'               => json_encode($event_services),
+      ':event_local'                  => $event_local,
+      ':event_visitor'                => $event_visitor,
+      ':ticket_type'                  => json_encode($event_ticket_type),
+      ':event_competition'            => $event_type,
+      ':event_state'                  => $event_state
     ]); */
 }else{
-    $sql = "INSERT INTO `eventos`(`nombre_evento`, `descripcion_evento`
-            , `organizacion_evento`, `fecha_evento`, `hora_evento`, `lugar_evento`
-            , `ciudad_evento`, `duracion_evento`, `capacidad_evento`, `precio_evento`
-            , `entradas_disponibles_evento`, `servicios_disponibles_evento`, `equipo_local`
-            , `equipo_visitante`, `tipo_entrada_evento`, `tipo_partido_evento`, `estado_evento`)
+    $sql = "INSERT INTO `eventos`(`event_name`, `event_description`
+            , `event_organization`, `event_date`, `event_hour`, `event_place`
+            , `event_city`, `event_duration`, `event_capacity`, `event_price`
+            , `event_disponibility`, `event_services`, `event_local`
+            , `event_visitor`, `ticket_type`, `event_competition`, `event_state`)
         VALUES(:nombre_evento,:descripcion_evento,:organizacion_evento,:fecha_evento,:hora_evento
         ,:lugar_evento,:ciudad_evento,:duracion_evento,:capacidad_evento,:precio_evento,:entradas_disponibles_evento
         ,:servicios_disponibles_evento,:equipo_local,:equipo_visitante,:tipo_entrada_evento,:tipo_partido_evento,:estado_evento)";

@@ -1,7 +1,6 @@
 <?php
   $errores = $_SESSION['errores'] ?? [];
-  $old = $_SESSION['old'] ?? [];
-  $valores = $old ?: ($data ?? []);
+  $old = $_SESSION['old'] ?? $data ?? [];
   unset($_SESSION['errores'], $_SESSION['old']);
 
 function errorCampo(string $campo, array $errores): ?string {
@@ -33,18 +32,10 @@ $event_state = [
     'cancelado'     => 'Cancelado',
     'finalizado'    => 'Finalizado'
 ];
-$servicesSelected = isset($valores['servicios_disponibles_evento'])
-    ?(is_array($valores['servicios_disponibles_evento'])
-        ? $valores['servicios_disponibles_evento']
-        :json_decode($valores['servicios_disponibles_evento'], true))
-    : [];
-$ticketsSelected = isset($valores['tipo_entrada_evento'])
-    ?(is_array($valores['tipo_entrada_evento'])
-        ? $valores['tipo_entrada_evento']
-        :json_decode($valores['tipo_entrada_evento'], true))
-    : [];
-$typeSelected = $valores['selected_type'] ?? '';
-$stateSelected = $valores['selected_state'] ?? '';
+$servicesSelected = $old['selected_services'] ?? [];
+$ticketsSelected = $old['selected_tickets'] ?? [];
+$typeSelected = $old['selected_type'] ?? '';
+$stateSelected = $old['selected_state'] ?? '';
 
 ?>
 <!DOCTYPE html>
@@ -61,13 +52,14 @@ $stateSelected = $valores['selected_state'] ?? '';
 <body>
 
 
-<form action="form_validation.php" method="post" id="formGol">  
+<form action="form_validation.php" method="post" id="formGol">
+    <input type="hidden" name="id" value="<?= $old['event_id'] ?? '' ?>"> 
 
     <h2><span class="icono">⚽</span> GolTickets</h2>
 
     <label>Nombre del evento:</label>
     <input type="text" name="event_name" id="event_name" 
-            value="<?= htmlspecialchars($valores['event_name'] ?? '') ?>"
+            value="<?= htmlspecialchars($old['event_name'] ?? '') ?>"
             class="<?= errorCampo('event_name', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_name">
         <?= htmlspecialchars(errorCampo('event_name', $errores) ?? '') ?>
@@ -75,7 +67,7 @@ $stateSelected = $valores['selected_state'] ?? '';
 
     <label>Descripción del evento:</label>
     <textarea rows="3" type="text" name="event_description" id="event_description" 
-            value="<?= htmlspecialchars($valores['event_description'] ?? '') ?>"
+            value="<?= htmlspecialchars($old['event_description'] ?? '') ?>"
             class="<?= errorCampo('event_description', $errores) ? 'error' : '' ?>"></textarea>
     <div class="error-text" id="error-event_description">
         <?= htmlspecialchars(errorCampo('event_description', $errores) ?? '') ?>
@@ -83,7 +75,7 @@ $stateSelected = $valores['selected_state'] ?? '';
 
     <label>Organización del evento:</label>
     <input type="text" name="event_organization" id="event_organization" 
-            value="<?= htmlspecialchars($valores['event_organization'] ?? '') ?>"
+            value="<?= htmlspecialchars($old['event_organization'] ?? '') ?>"
             class="<?= errorCampo('event_organization', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_organization">
         <?= htmlspecialchars(errorCampo('event_organization', $errores) ?? '') ?>
@@ -91,7 +83,7 @@ $stateSelected = $valores['selected_state'] ?? '';
 
     <label>Fecha del evento: (DD/MM/AAAA)</label>
     <input type="text" name="event_date" id="event_date" 
-            value="<?= htmlspecialchars($valores['event_date'] ?? '') ?>"
+            value="<?= htmlspecialchars($old['event_date'] ?? '') ?>"
             class="<?= errorCampo('event_date', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_date">
         <?= htmlspecialchars(errorCampo('event_date', $errores) ?? '') ?>
@@ -99,7 +91,7 @@ $stateSelected = $valores['selected_state'] ?? '';
 
     <label>Hora del evento:</label>
     <input type="text" name="event_hour" id="event_hour" 
-            value="<?= htmlspecialchars($valores['event_hour'] ?? '') ?>"
+            value="<?= htmlspecialchars($old['event_hour'] ?? '') ?>"
             class="<?= errorCampo('event_hour', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_hour">
         <?= htmlspecialchars(errorCampo('event_hour', $errores) ?? '') ?>
@@ -107,7 +99,7 @@ $stateSelected = $valores['selected_state'] ?? '';
 
     <label>Lugar del evento:</label>
     <input type="text" name="event_place" id="event_place" 
-            value="<?= htmlspecialchars($valores['event_place'] ?? '') ?>"
+            value="<?= htmlspecialchars($old['event_place'] ?? '') ?>"
             class="<?= errorCampo('event_place', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_place">
         <?= htmlspecialchars(errorCampo('event_place', $errores) ?? '') ?>
@@ -115,7 +107,7 @@ $stateSelected = $valores['selected_state'] ?? '';
 
     <label>Ciudad del evento:</label>
     <input type="text" name="event_city" id="event_city" 
-            value="<?= htmlspecialchars($valores['event_city'] ?? '') ?>"
+            value="<?= htmlspecialchars($old['event_city'] ?? '') ?>"
             class="<?= errorCampo('event_city', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_city">
         <?= htmlspecialchars(errorCampo('event_city', $errores) ?? '') ?>
@@ -123,7 +115,7 @@ $stateSelected = $valores['selected_state'] ?? '';
 
     <label>Duración del evento (minutos):</label>
     <input type="text" name="event_duration" id="event_duration" 
-            value="<?= htmlspecialchars($valores['event_duration'] ?? '') ?>"
+            value="<?= htmlspecialchars($old['event_duration'] ?? '') ?>"
             class="<?= errorCampo('event_duration', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_duration">
         <?= htmlspecialchars(errorCampo('event_duration', $errores) ?? '') ?>
@@ -131,7 +123,7 @@ $stateSelected = $valores['selected_state'] ?? '';
 
     <label>Capacidad del evento:</label>
     <input type="text" name="event_capacity" id="event_capacity" 
-            value="<?= htmlspecialchars($valores['event_capacity'] ?? '') ?>"
+            value="<?= htmlspecialchars($old['event_capacity'] ?? '') ?>"
             class="<?= errorCampo('event_capacity', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_capacity">
         <?= htmlspecialchars(errorCampo('event_capacity', $errores) ?? '') ?>
@@ -139,7 +131,7 @@ $stateSelected = $valores['selected_state'] ?? '';
 
     <label>Precio del evento (€):</label>
     <input type="text" name="event_price" id="event_price" 
-            value="<?= htmlspecialchars($valores['event_price'] ?? '') ?>"
+            value="<?= htmlspecialchars($old['event_price'] ?? '') ?>"
             class="<?= errorCampo('event_price', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_price">
         <?= htmlspecialchars(errorCampo('event_price', $errores) ?? '') ?>
@@ -147,14 +139,14 @@ $stateSelected = $valores['selected_state'] ?? '';
 
     <label>Entradas disponibles:</label>
     <input type="text" name="event_disponibility" id="event_disponibility" 
-            value="<?= htmlspecialchars($valores['event_disponibility'] ?? '') ?>"
+            value="<?= htmlspecialchars($old['event_disponibility'] ?? '') ?>"
             class="<?= errorCampo('event_disponibility', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_disponibility">
         <?= htmlspecialchars(errorCampo('event_disponibility', $errores) ?? '') ?>
     </div>
 
     <label>Servicios disponibles:</label>
-    <div class="checkbox-group">
+<div class="checkbox-group">
         <label>
             <?php foreach ($event_services as $valor => $label): ?>
             <label class="opcion">

@@ -1,9 +1,9 @@
 <?php
 include "connect.php";
 
-$id_evento = intval($_GET['id_evento']);
-$sql = "DELETE FROM eventos WHERE id_evento = :id_evento";
+$event_id = intval($_GET['event_id']);
+$sql = "DELETE FROM eventos WHERE event_id = :event_id";
 $stmt = $conn->prepare($sql);
-$stmt->execute([':id_evento' => $id_evento]);
+$stmt->execute([':event_id' => $event_id]);
 
 header("Location:index.php");

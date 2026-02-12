@@ -1,7 +1,7 @@
 <?php
 include "connect.php";
 
-$result = $conn->query("SELECT * FROM eventos ORDER BY id_evento DESC");
+$result = $conn->query("SELECT * FROM eventos ORDER BY event_id DESC");
 ?>
 <link rel="stylesheet" href="index.css">
 <h2>⚽ GolTickets</h2>
@@ -37,27 +37,27 @@ $result = $conn->query("SELECT * FROM eventos ORDER BY id_evento DESC");
     </tr>
    <?php foreach ($result as $row): ?>
     <tr>
-        <td><?= htmlspecialchars($row['nombre_evento']) ?></td>
-        <td><?= $row['descripcion_evento'] ?></td>
-        <td><?= $row['organizacion_evento'] ?></td>
-        <td><?= $row['fecha_evento'] ?></td>
-        <td><?= $row['hora_evento'] ?></td>
-        <td><?= $row['fecha_publicacion_evento'] ?></td>
-        <td><?= $row['lugar_evento'] ?></td>
-        <td><?= $row['ciudad_evento'] ?></td>
-        <td><?= $row['duracion_evento'] ?></td>
-        <td><?= $row['capacidad_evento'] ?></td>
-        <td><?= $row['precio_evento'] ?>€</td>
-        <td><?= $row['entradas_disponibles_evento'] ?></td>
-        <td><?= implode(', ', json_decode($row['servicios_disponibles_evento'], true)) ?></td></td>
-        <td><?= $row['equipo_local'] ?></td>
-        <td><?= $row['equipo_visitante'] ?></td>
-        <td><?= implode(', ', json_decode($row['tipo_entrada_evento'], true)) ?></td></td>
-        <td><?= $row['tipo_partido_evento'] ?></td>
-        <td><?= $row['estado_evento'] ?></td>
+        <td><?= htmlspecialchars($row['event_name']) ?></td>
+        <td><?= $row['event_description'] ?></td>
+        <td><?= $row['event_organization'] ?></td>
+        <td><?= $row['event_date'] ?></td>
+        <td><?= $row['event_hour'] ?></td>
+        <td><?= $row['event_release_date'] ?></td>
+        <td><?= $row['event_place'] ?></td>
+        <td><?= $row['event_city'] ?></td>
+        <td><?= $row['event_duration'] ?></td>
+        <td><?= $row['event_capacity'] ?></td>
+        <td><?= $row['event_price'] ?>€</td>
+        <td><?= $row['event_disponibility'] ?></td>
+        <td><?= implode(', ', json_decode($row['event_services'], true)) ?></td></td>
+        <td><?= $row['event_local'] ?></td>
+        <td><?= $row['event_visitor'] ?></td>
+        <td><?= implode(', ', json_decode($row['ticket_type'], true)) ?></td></td>
+        <td><?= $row['event_competition'] ?></td>
+        <td><?= $row['event_state'] ?></td>
         <td>
-            <a href="edit.php?id_evento=<?= $row['id_evento'] ?>">✏️</a>
-            <a href="delete.php?id_evento=<?= $row['id_evento'] ?>" onclick="return confirm('Eliminar?')">❌</a>
+            <a href="edit.php?event_id=<?= $row['event_id'] ?>">✏️</a>
+            <a href="delete.php?event_id=<?= $row['event_id'] ?>" onclick="return confirm('Eliminar?')">❌</a>
         </td>
     </tr>
 <?php endforeach; ?>

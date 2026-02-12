@@ -2,10 +2,10 @@
 session_start();
 include "connect.php";
 
-$id_evento = intval($_GET['id_evento'] ?? 0);
-$sql = "SELECT * FROM eventos WHERE id_evento = :id_evento";
+$event_id = intval($_GET['event_id'] ?? 0);
+$sql = "SELECT * FROM eventos WHERE event_id = :event_id";
 $stmt = $conn->prepare($sql);
-$stmt->execute([':id_evento' => $id_evento]);
+$stmt->execute([':event_id' => $event_id]);
 $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
 include "form.php";
