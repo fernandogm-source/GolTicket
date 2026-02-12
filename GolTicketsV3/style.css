@@ -1,0 +1,121 @@
+/* Fuente limpia y estilo general */
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 40px;
+}
+
+/* Contenedor del formulario */
+form {
+    max-width: 700px;
+    margin: auto;
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Título */
+form h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Etiquetas */
+form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* Inputs, selects y textareas */
+form input[type="text"],
+form textarea,
+form select {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: #fafafa;
+    transition: border-color 0.2s ease;
+}
+
+/* Efecto al enfocar */
+form input:focus,
+form textarea:focus,
+form select:focus {
+    border-color: #0078d4;
+    outline: none;
+    background-color: #fff;
+}
+
+/* Textareas */
+form textarea {
+    resize: vertical;
+}
+
+/* Grupo de checkboxes */
+.checkbox-group {
+    margin-top: 8px;
+    padding: 10px 12px;
+    background: #fafafa;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Botón */
+.submit {
+    margin-top: 25px;
+    width: 100%;
+    padding: 12px;
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Hover del botón */
+.submit:hover {
+    background-color: #005fa3;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    form {
+        padding: 20px;
+    }
+}
+
+.error-text {
+    color: #d93025;
+    font-size: 0.9em;
+    margin-top: 4px;
+}
+.error {
+    border: 1px solid #d93025;
+}
