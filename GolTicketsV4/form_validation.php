@@ -20,12 +20,12 @@ $event_duration = test_input($_POST['event_duration'] ?? '');
 $event_capacity = test_input($_POST['event_capacity'] ?? '');
 $event_price = test_input($_POST['event_price'] ?? '');
 $event_disponibility = test_input($_POST['event_disponibility'] ?? '');
-$event_services = $_POST['selected_services'] ?? [];
+$event_services = $_POST['event_services'] ?? [];
 $event_local = test_input($_POST['event_local'] ?? '');
 $event_visitor = test_input($_POST['event_visitor'] ?? '');
-$event_ticket_type = $_POST['selected_tickets'] ?? [];
-$event_type = $_POST['selected_type'] ?? '';
-$event_state = $_POST['selected_state'] ?? '';
+$event_ticket_type = $_POST['ticket_type'] ?? [];
+$event_type = $_POST['event_competition'] ?? '';
+$event_state = $_POST['event_state'] ?? '';
 
 /* ========= NOMBRE ========= */
 $event_name = test_input($_POST['event_name'] ?? '');
@@ -163,19 +163,19 @@ if ($event_visitor === '') {
 
 /* ========= TIPO ENTRADA ========= */
 if (empty($event_ticket_type)) {
-    $errores['selected_tickets'] = "Selecciona al menos un tipo de entrada";
+    $errores['ticket_type'] = "Selecciona al menos un tipo de entrada";
 }
 
 /* ========= TIPO Partido ========= */
 $partidosValidos = ['laliga','laliga2','copa_del_rey','champions_league'];
 if (!in_array($event_type, $partidosValidos)) {
-    $errores['selected_type'] = "Tipo inválido";
+    $errores['event_competition'] = "Tipo inválido";
 }
 
 /* ========= ESTADO EVENTO ========= */
 $estadosValidos = ['programado','en_venta','agotado','cancelado','finalizado'];
 if (!in_array($event_state, $estadosValidos)) {
-    $errores['selected_state'] = "Tipo inválido";
+    $errores['event_state'] = "Tipo inválido";
 }
 
 // ========================
@@ -184,7 +184,7 @@ if (!in_array($event_state, $estadosValidos)) {
 if($errores){
     $_SESSION['errores']=$errores;
     $_SESSION['old']=$old;
-    header("Location: ".($id?"edit.php?id=$id":"create.php"));
+    header("Location: ".($event_id?"edit.php?id=$event_id":"create.php"));
     exit;
 }
 
@@ -199,6 +199,9 @@ function test_input($data) {
 // ========================
 // PREPARAR PARA DB
 // ========================
+$event_servicesJson=json_encode($event_services);
+$event_ticket_typeJson=json_encode($event_ticket_type);
+
 if($event_id){
     $sql = "UPDATE `eventos` 
     SET `event_name`=:event_name,`event_description`=:event_description,`event_organization`=:event_organization
@@ -224,10 +227,10 @@ if($event_id){
       ':event_capacity'               => $event_capacity,
       ':event_price'                  => $event_price,
       ':event_disponibility'          => $event_disponibility,
-      ':event_services'               => json_encode($event_services),
+      ':event_services'               => $event_servicesJson,
       ':event_local'                  => $event_local,
       ':event_visitor'                => $event_visitor,
-      ':ticket_type'                  => json_encode($event_ticket_type),
+      ':ticket_type'                  => $event_ticket_typeJson,
       ':event_competition'            => $event_type,
       ':event_state'                  => $event_state
      ]);
@@ -245,10 +248,10 @@ if($event_id){
       ':event_capacity'               => $event_capacity,
       ':event_price'                  => $event_price,
       ':event_disponibility'          => $event_disponibility,
-      ':event_services'               => json_encode($event_services),
+      ':event_services'               => $event_servicesJson,
       ':event_local'                  => $event_local,
       ':event_visitor'                => $event_visitor,
-      ':ticket_type'                  => json_encode($event_ticket_type),
+      ':ticket_type'                  => $event_ticket_typeJson,
       ':event_competition'            => $event_type,
       ':event_state'                  => $event_state
     ]); */
@@ -262,7 +265,7 @@ if($event_id){
         ,:lugar_evento,:ciudad_evento,:duracion_evento,:capacidad_evento,:precio_evento,:entradas_disponibles_evento
         ,:servicios_disponibles_evento,:equipo_local,:equipo_visitante,:tipo_entrada_evento,:tipo_partido_evento,:estado_evento)";
     $stmt = $conn->prepare($sql);
-     echo "<pre>";
+/*      echo "<pre>";
      echo "SQL: $sql\n";
      print_r([
       ':nombre_evento'                  => $event_name,
@@ -276,16 +279,16 @@ if($event_id){
       ':capacidad_evento'               => $event_capacity,
       ':precio_evento'                  => $event_price,
       ':entradas_disponibles_evento'    => $event_disponibility,
-      ':servicios_disponibles_evento'   => json_encode($event_services),
+      ':servicios_disponibles_evento'   => $event_servicesJson,
       ':equipo_local'                   => $event_local,
       ':equipo_visitante'               => $event_visitor,
-      ':tipo_entrada_evento'            => json_encode($event_ticket_type),
+      ':tipo_entrada_evento'            => $event_ticket_typeJson,
       ':tipo_partido_evento'            => $event_type,
       ':estado_evento'                  => $event_state
      ]);
      echo "</pre>";
-     exit;
-/*     $stmt->execute([
+     exit; */
+    $stmt->execute([
       ':nombre_evento'                  => $event_name,
       ':descripcion_evento'             => $event_description,
       ':organizacion_evento'            => $event_organization,
@@ -297,12 +300,12 @@ if($event_id){
       ':capacidad_evento'               => $event_capacity,
       ':precio_evento'                  => $event_price,
       ':entradas_disponibles_evento'    => $event_disponibility,
-      ':servicios_disponibles_evento'   => json_encode($event_services),
+      ':servicios_disponibles_evento'   => $event_servicesJson,
       ':equipo_local'                   => $event_local,
       ':equipo_visitante'               => $event_visitor,
-      ':tipo_entrada_evento'            => json_encode($event_ticket_type),
+      ':tipo_entrada_evento'            => $event_ticket_typeJson,
       ':tipo_partido_evento'            => $event_type,
       ':estado_evento'                  => $event_state
-    ]); */
+    ]);
 }
 header("Location:index.php");

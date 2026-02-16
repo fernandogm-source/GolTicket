@@ -6,7 +6,7 @@
 function errorCampo(string $campo, array $errores): ?string {
   return $errores[$campo] ?? null;
   }
-$ticketType = [
+$ticketTypeAva = [
     'general'   => 'General',
     'vip'       => 'VIP',
     'premium'   => 'Premium',
@@ -14,28 +14,28 @@ $ticketType = [
     'grada'     => 'Grada',
     'palco'     => 'Palco'
 ];  
-$event_services = [
+$event_servicesAva = [
     'parking'       => 'Parking',
     'taquillas'     => 'Taquillas',
     'merchandising' => 'Merchandising'
 ];
-$event_type = [
+$event_typeAva = [
     'laliga'            => 'LaLiga',
     'laliga2'           => 'LaLiga 2',
     'copa_del_rey'      => 'Copa del Rey',
     'champions_league'  => 'Champions League'
 ];
-$event_state = [
+$event_stateAva = [
     'programado'    => 'Programado',
     'en_venta'      => 'En venta',
     'agotado'       => 'Agotado',
     'cancelado'     => 'Cancelado',
     'finalizado'    => 'Finalizado'
 ];
-$servicesSelected = $old['selected_services'] ?? [];
-$ticketsSelected = $old['selected_tickets'] ?? [];
-$typeSelected = $old['selected_type'] ?? '';
-$stateSelected = $old['selected_state'] ?? '';
+$servicesSelected = json_decode($old['event_services'], true) ?? [];
+$ticketsSelected = json_decode($old['ticket_type'], true) ?? [];
+$typeSelected = $old['event_competition'] ?? '';
+$stateSelected = $old['event_state'] ?? '';
 
 ?>
 <!DOCTYPE html>
@@ -53,7 +53,7 @@ $stateSelected = $old['selected_state'] ?? '';
 
 
 <form action="form_validation.php" method="post" id="formGol">
-    <input type="hidden" name="id" value="<?= $old['event_id'] ?? '' ?>"> 
+    <input type="hidden" name="event_id" value="<?= $old['event_id'] ?? '' ?>"> 
 
     <h2><span class="icono">⚽</span> GolTickets</h2>
 
@@ -66,9 +66,9 @@ $stateSelected = $old['selected_state'] ?? '';
     </div>
 
     <label>Descripción del evento:</label>
-    <textarea rows="3" type="text" name="event_description" id="event_description" 
-            value="<?= htmlspecialchars($old['event_description'] ?? '') ?>"
-            class="<?= errorCampo('event_description', $errores) ? 'error' : '' ?>"></textarea>
+    <textarea rows="3" type="text" name="event_description" id="event_description"
+            class="<?= errorCampo('event_description', $errores) ? 'error' : '' ?>">
+        <?= htmlspecialchars($old['event_description'] ?? '') ?></textarea>
     <div class="error-text" id="error-event_description">
         <?= htmlspecialchars(errorCampo('event_description', $errores) ?? '') ?>
     </div>
@@ -148,15 +148,15 @@ $stateSelected = $old['selected_state'] ?? '';
     <label>Servicios disponibles:</label>
 <div class="checkbox-group">
         <label>
-            <?php foreach ($event_services as $valor => $label): ?>
+            <?php foreach ($event_servicesAva as $valor => $label): ?>
             <label class="opcion">
-                <input type="checkbox" name="selected_services[]" value="<?= $valor ?>"
+                <input type="checkbox" name="event_services[]" value="<?= $valor ?>"
                        <?= in_array($valor, $servicesSelected) ? 'checked' : '' ?>>
                 <?= $label ?>
             </label>
         <?php endforeach; ?>
         <div class="error-text" id="error-services">
-            <?= errorCampo('selected_services',$errores) ?>
+            <?= errorCampo('event_services',$errores) ?>
         </div>
         </label>
     </div>
@@ -179,43 +179,43 @@ $stateSelected = $old['selected_state'] ?? '';
 
     <label>Tipos de entrada:</label>
     <div class="checkbox-group">
-            <?php foreach ($ticketType as $valor => $label): ?>
+            <?php foreach ($ticketTypeAva as $valor => $label): ?>
             <label class="opcion">
-                <input type="checkbox" name="selected_tickets[]" value="<?= $valor ?>"
+                <input type="checkbox" name="ticket_type[]" value="<?= $valor ?>"
                        <?= in_array($valor, $ticketsSelected) ? 'checked' : '' ?>>
                 <?= $label ?>
             </label>
         <?php endforeach; ?>
         <div class="error-text" id="error-tickets">
-            <?= errorCampo('selected_tickets',$errores) ?>
+            <?= errorCampo('ticket_type',$errores) ?>
         </div>
     </div>
 
       <label>Tipo de partido:</label>
   <div class="radio-group">
-         <?php foreach ($event_type as $valor => $label): ?>
+         <?php foreach ($event_typeAva as $valor => $label): ?>
             <label class="opcion">
-                <input type="radio" name="selected_type" value="<?= $valor ?>"
+                <input type="radio" name="event_competition" value="<?= $valor ?>"
                        <?= $typeSelected === $valor ? 'checked' : '' ?>>
                 <?= $label ?>
             </label>
         <?php endforeach; ?>
         <div class="error-text" id="error-type">
-            <?= errorCampo('selected_type',$errores) ?>
+            <?= errorCampo('event_competition',$errores) ?>
         </div>
   </div>
 
   <label>Estado del evento:</label>
   <div class="radio-group">
-     <?php foreach ($event_state as $valor => $label): ?>
+     <?php foreach ($event_stateAva as $valor => $label): ?>
             <label class="opcion">
-                <input type="radio" name="selected_state" value="<?= $valor ?>"
+                <input type="radio" name="event_state" value="<?= $valor ?>"
                        <?= $stateSelected === $valor ? 'checked' : '' ?>>
                 <?= $label ?>
             </label>
         <?php endforeach; ?>
         <div class="error-text" id="error-state">
-            <?= errorCampo('selected_state',$errores) ?>
+            <?= errorCampo('event_state',$errores) ?>
         </div>
   </div>
 

@@ -60,10 +60,10 @@ $(function () {
     const event_disponibility = $("#event_disponibility").val().trim();
     const event_local = $("#event_local").val().trim();
     const event_visitor = $("#event_visitor").val().trim();
-    const state = $("input[name='selected_state']:checked").val();
-    const type = $("input[name='selected_type']:checked").val();
-    const tickets = $("input[name='selected_tickets[]']:checked").length;
-    const services = $("input[name='selected_services[]']:checked").length;
+    const state = $("input[name='event_state']:checked").val();
+    const type = $("input[name='event_competition']:checked").val();
+    const tickets = $("input[name='ticket_type[]']:checked").length;
+    const services = $("input[name='event_services[]']:checked").length;
 
 
     const ahora = new Date();
