@@ -33,7 +33,7 @@ $old['event_name'] = $event_name;
 
 if ($event_name === '') {
   $errores['event_name'] = "El nombre es obligatorio.";
-} elseif (!preg_match("/^[a-zA-Z-'ñ ]*$/",$event_name)) {
+} elseif (!preg_match("/^[a-zA-Z-'ñ áéóíú.,]*$/",$event_name)) {
     $errores['event_name'] = "Solo se pueden usar letras y espacios";
 }
 
@@ -43,7 +43,7 @@ $old['event_description'] = $event_description;
 
 if ($event_description === '') {
   $errores['event_description'] = "La descripción es obligatorio.";
-} elseif (!preg_match("/^[a-zA-Z-'ñ ]*$/",$event_description)) {
+} elseif (!preg_match("/^[a-zA-Z-'ñ áéóíú.,]*$/",$event_description)) {
     $errores['event_description'] = "Solo se pueden usar letras y espacios";
 }
 
@@ -53,7 +53,7 @@ $old['event_organization'] = $event_organization;
 
 if ($event_organization === '') {
   $errores['event_organization'] = "El organizador es obligatorio.";
-} elseif (!preg_match("/^[a-zA-Z-'ñ ]*$/",$event_organization)) {
+} elseif (!preg_match("/^[a-zA-Z-'ñ áéóíú.,]*$/",$event_organization)) {
     $errores['event_organization'] = "Solo se pueden usar letras y espacios";
 }
 
@@ -69,9 +69,13 @@ if ($event_date === '') {
   if (!$fechaObj || $warnings > 0 || $errors > 0) {
     $errores['event_date'] = "Formato de fecha inválido.";
   } else {
-    $hoy = new DateTime('today');
-    if ($fechaObj < $hoy) {
-      $errores['event_date'] = "No se permiten fechas anteriores.";
+    if($event_id){
+      
+    }else{
+      $hoy = new DateTime('today');
+      if ($fechaObj < $hoy) {
+        $errores['event_date'] = "No se permiten fechas anteriores.";
+      }
     }
   }
 }
@@ -90,7 +94,7 @@ $old['event_place'] = $event_place;
 
 if ($event_place === '') {
   $errores['event_place'] = "El lugar es obligatorio.";
-} elseif (!preg_match("/^[a-zA-Z-'ñ ]*$/",$event_place)) {
+} elseif (!preg_match("/^[a-zA-Z-'ñ áéóíú.,]*$/",$event_place)) {
     $errores['event_place'] = "Solo se pueden usar letras y espacios";
 }
 
@@ -100,7 +104,7 @@ $old['event_city'] = $event_city;
 
 if ($event_city === '') {
   $errores['event_city'] = "La ciudad es obligatoria.";
-} elseif (!preg_match("/^[a-zA-Z-'ñ ]*$/",$event_city)) {
+} elseif (!preg_match("/^[a-zA-Z-'ñ áéóíú.,]*$/",$event_city)) {
     $errores['event_city'] = "Solo se pueden usar letras y espacios";
 }
 
@@ -147,7 +151,7 @@ $old['event_local'] = $event_local;
 
 if ($event_local === '') {
   $errores['event_local'] = "El equipo local es obligatorio.";
-} elseif (!preg_match("/^[a-zA-Z-'ñ ]*$/",$event_local)) {
+} elseif (!preg_match("/^[a-zA-Z-'ñ áéóíú.,0-9]*$/",$event_local)) {
     $errores['event_local'] = "Solo se pueden usar letras y espacios";
 }
 
@@ -157,7 +161,7 @@ $old['event_visitor'] = $event_visitor;
 
 if ($event_visitor === '') {
   $errores['event_visitor'] = "El equipo visitante es obligatorio.";
-} elseif (!preg_match("/^[a-zA-Z-'ñ ]*$/",$event_visitor)) {
+} elseif (!preg_match("/^[a-zA-Z-'ñ áéóíú.,0-9]*$/",$event_visitor)) {
     $errores['event_visitor'] = "Solo se pueden usar letras y espacios";
 }
 
@@ -184,7 +188,7 @@ if (!in_array($event_state, $estadosValidos)) {
 if($errores){
     $_SESSION['errores']=$errores;
     $_SESSION['old']=$old;
-    header("Location: ".($event_id?"edit.php?id=$event_id":"create.php"));
+    header("Location: ".($event_id?"edit.php?event_id=$event_id":"create.php"));
     exit;
 }
 
@@ -213,7 +217,7 @@ if($event_id){
     WHERE event_id=:event_id";
     
     $stmt = $conn->prepare($sql);
-     echo "<pre>";
+/*      echo "<pre>";
      echo "SQL: $sql\n";
      print_r([
       ':event_name'                   => $event_name,
@@ -235,8 +239,9 @@ if($event_id){
       ':event_state'                  => $event_state
      ]);
      echo "</pre>";
-     exit;
-/*     $stmt->execute([
+     exit; */
+    $stmt->execute([
+      ':event_id'                     => $event_id,
       ':event_name'                   => $event_name,
       ':event_description'            => $event_description,
       ':event_organization'           => $event_organization,
@@ -254,7 +259,7 @@ if($event_id){
       ':ticket_type'                  => $event_ticket_typeJson,
       ':event_competition'            => $event_type,
       ':event_state'                  => $event_state
-    ]); */
+    ]);
 }else{
     $sql = "INSERT INTO `eventos`(`event_name`, `event_description`
             , `event_organization`, `event_date`, `event_hour`, `event_place`

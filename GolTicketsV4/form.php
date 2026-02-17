@@ -32,8 +32,16 @@ $event_stateAva = [
     'cancelado'     => 'Cancelado',
     'finalizado'    => 'Finalizado'
 ];
-$servicesSelected = json_decode($old['event_services'], true) ?? [];
-$ticketsSelected = json_decode($old['ticket_type'], true) ?? [];
+$servicesSelected = $old['event_services'] ?? [];
+if (is_string($servicesSelected)) {
+      $decodificado = json_decode($servicesSelected, true);
+      $servicesSelected = is_array($decodificado) ? $decodificado : [$servicesSelected];
+  }
+$ticketsSelected = $old['ticket_type'] ?? [];
+if (is_string($ticketsSelected)) {
+      $decodificado = json_decode($ticketsSelected, true);
+      $ticketsSelected = is_array($decodificado) ? $decodificado : [$ticketsSelected];
+  }
 $typeSelected = $old['event_competition'] ?? '';
 $stateSelected = $old['event_state'] ?? '';
 
