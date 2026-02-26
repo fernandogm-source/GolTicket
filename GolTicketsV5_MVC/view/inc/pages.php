@@ -1,10 +1,15 @@
 <?php
+if(isset($_GET['page'])){
 	switch($_GET['page']){
 		case "homepage";
 			include("module/inicio/view/inicio.php");
 			break;
-		case "controller_user";
-			include("module/user/controller/".$_GET['page'].".php");
+		case "controller_event";
+		 	
+			/* $data = 'hola crtl user controller';
+ 			die('<script>console.log('.json_encode( $data ) .');</script>'); */
+
+			include("module/event/controller/".$_GET['page'].".php");
 			break;
 		case "services";
 			include("module/services/".$_GET['page'].".php");
@@ -25,4 +30,7 @@
 			include("module/inicio/view/inicio.php");
 			break;
 	}
+}else{
+	include("module/inicio/view/inicio.php");
+}
 ?>

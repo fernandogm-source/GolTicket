@@ -3,10 +3,10 @@ class connect
 {
 	public static function con()
 	{
-		$host = '127.0.0.1';
+		$host = 'localhost';
 		$user = "root";
 		$pass = "";
-		$db = "otaku_db";
+		$db = "goltickets";
 
 		try {
 			$conexion = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
