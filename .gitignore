@@ -10,6 +10,7 @@ wampthemes/
 2_datepicker_session/
 3_radiobutton_checkbox/
 8_CRUD/
+9_MVC_CRUD_v1/
 
 # Logs y temporales
 *.log
