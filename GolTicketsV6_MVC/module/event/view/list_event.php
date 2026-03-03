@@ -28,8 +28,8 @@ else {
         echo '<td width=350>';
         echo '<a class="Button_blue" href="index.php?page=controller_event&op=read&id=' . htmlspecialchars($row['event_id']) . '">Read</a>';
         echo '&nbsp;';
-/*         echo '<a class="Button_green" href="index.php?page=controller_user&op=update&id=' . htmlspecialchars($row['user']) . '">Update</a>';
-        echo '&nbsp;'; */
+        echo '<a class="Button_green" href="index.php?page=controller_event&op=update&id=' . htmlspecialchars($row['event_id']) . '">Update</a>';
+        echo '&nbsp;';
         echo '<a class="Button_red" href="index.php?page=controller_event&op=delete&id=' . htmlspecialchars($row['event_id']) . '">Delete</a>';
         echo '</td>';
         echo '</tr>';

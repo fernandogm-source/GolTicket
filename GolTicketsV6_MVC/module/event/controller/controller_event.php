@@ -35,6 +35,8 @@ switch ($_GET['op']) {
         $event = null; // Empty user for the form
 
         if (isset($_POST['create'])) {
+            //
+            //
             $errores = validate();
             if (empty($errores)) {
                 try {
@@ -61,25 +63,33 @@ switch ($_GET['op']) {
             }
             else {
                 $event = [
-                    'user' => $_POST['usuario'] ?? '',
-                    'pass' => $_POST['pass'] ?? '',
-                    'name' => $_POST['nombre'] ?? '',
-                    'dni' => $_POST['DNI'] ?? '',
-                    'sex' => $_POST['sexo'] ?? '',
-                    'birthdate' => $_POST['fecha_nacimiento'] ?? '',
-                    'age' => $_POST['edad'] ?? '',
-                    'country' => $_POST['pais'] ?? '',
-                    'language' => json_encode($_POST['idioma'] ?? []),
-                    'comment' => $_POST['observaciones'] ?? '',
-                    'hobby' => json_encode($_POST['aficion'] ?? [])
+                    'event_name'          => $_POST['event_name'] ?? '',
+                    'event_description'   => $_POST['event_description'] ?? '',
+                    'event_organization'  => $_POST['event_organization'] ?? '',
+                    'event_date'          => $_POST['event_date'] ?? '',
+                    'event_hour'          => $_POST['event_hour'] ?? '',
+                    'event_place'         => $_POST['event_place'] ?? '',
+                    'event_city'          => $_POST['event_city'] ?? '',
+                    'event_duration'      => $_POST['event_duration'] ?? '',
+                    'event_capacity'      => $_POST['event_capacity'] ?? '',
+                    'event_price'         => $_POST['event_price'] ?? '',
+                    'event_disponibility' => $_POST['event_disponibility'] ?? '',
+                    'event_services'      => json_encode($_POST['event_services'] ?? []),
+                    'event_local'         => $_POST['event_local'] ?? '',
+                    'event_visitor'       => $_POST['event_visitor'] ?? '',
+                    'ticket_type'         => json_encode($_POST['ticket_type'] ?? []),
+                    'event_competition'   => $_POST['event_competition'] ?? '',
+                    'event_state'         => $_POST['event_state'] ?? '',
                 ];
+                    /* $data = 'hola crtl user';
+                    die('<script>console.log('.json_encode( $event ) .');</script>'); */
             }
         }
         include("module/event/view/form_event.php");
         break;
 
     case 'update':
-        include("module/user/model/validate.php");
+        include("module/event/model/validate.php");
         $errores = [];
         $user = null;
 
@@ -87,8 +97,8 @@ switch ($_GET['op']) {
             $errores = validate();
             if (empty($errores)) {
                 try {
-                    $daouser = new DAOUser();
-                    $rdo = $daouser->update_user($_POST);
+                    $daoevent = new DAOevent();
+                    $rdo = $daoevent->insert_event($_POST);
                 }
                 catch (Exception $e) {
                     $callback = 'index.php?page=503';
@@ -96,9 +106,9 @@ switch ($_GET['op']) {
                 }
 
                 if ($rdo) {
-                    echo '<script language="javascript">setTimeout(() => {
-                            toastr.success("Modificado en la base de datos correctamente");
-                        }, 1000);</script>';
+                    /* echo '<script language="javascript">setTimeout(() => {
+                            toastr.success("Creado en la base de datos correctamente");
+                        }, 1000);</script>'; */
                     echo '<script language="javascript">setTimeout(() => {
                             window.location.href = "index.php?page=controller_user&op=list";
                         }, 2000);</script>';
@@ -109,26 +119,34 @@ switch ($_GET['op']) {
                 }
             }
             else {
-                $user = [
-                    'user' => $_POST['usuario'] ?? '',
-                    'pass' => $_POST['pass'] ?? '',
-                    'name' => $_POST['nombre'] ?? '',
-                    'dni' => $_POST['DNI'] ?? '',
-                    'sex' => $_POST['sexo'] ?? '',
-                    'birthdate' => $_POST['fecha_nacimiento'] ?? '',
-                    'age' => $_POST['edad'] ?? '',
-                    'country' => $_POST['pais'] ?? '',
-                    'language' => json_encode($_POST['idioma'] ?? []),
-                    'comment' => $_POST['observaciones'] ?? '',
-                    'hobby' => json_encode($_POST['aficion'] ?? [])
+                $event = [
+                    'event_name'          => $_POST['event_name'] ?? '',
+                    'event_description'   => $_POST['event_description'] ?? '',
+                    'event_organization'  => $_POST['event_organization'] ?? '',
+                    'event_date'          => $_POST['event_date'] ?? '',
+                    'event_hour'          => $_POST['event_hour'] ?? '',
+                    'event_place'         => $_POST['event_place'] ?? '',
+                    'event_city'          => $_POST['event_city'] ?? '',
+                    'event_duration'      => $_POST['event_duration'] ?? '',
+                    'event_capacity'      => $_POST['event_capacity'] ?? '',
+                    'event_price'         => $_POST['event_price'] ?? '',
+                    'event_disponibility' => $_POST['event_disponibility'] ?? '',
+                    'event_services'      => json_encode($_POST['event_services'] ?? []),
+                    'event_local'         => $_POST['event_local'] ?? '',
+                    'event_visitor'       => $_POST['event_visitor'] ?? '',
+                    'ticket_type'         => json_encode($_POST['ticket_type'] ?? []),
+                    'event_competition'   => $_POST['event_competition'] ?? '',
+                    'event_state'         => $_POST['event_state'] ?? '',
                 ];
+                    /* $data = 'hola crtl user';
+                    die('<script>console.log('.json_encode( $event ) .');</script>'); */
             }
         }
 
         if (!isset($_POST['update'])) {
             try {
-                $daouser = new DAOUser();
-                $rdo = $daouser->select_user($_GET['id']);
+                $daouser = new DAOevent();
+                $rdo = $daouser->select_event($_GET['id']);
                 $user = $rdo;
             }
             catch (Exception $e) {
@@ -142,7 +160,7 @@ switch ($_GET['op']) {
             }
         }
 
-        include("module/user/view/form_user.php");
+        include("module/event/view/form_event.php");
         break;
 
     case 'read':

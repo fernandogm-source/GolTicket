@@ -1,51 +1,11 @@
-$(function () {
-    $.datepicker.setDefaults({
-    closeText: "Cerrar",
-    prevText: "< Ant",
-    nextText: "Sig >",
-    currentText: "Hoy",
-    monthNames: [
-      "Enero","Febrero","Marzo","Abril","Mayo","Junio",
-      "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"
-    ],
-    monthNamesShort: [
-      "Ene","Feb","Mar","Abr","May","Jun",
-      "Jul","Ago","Sep","Oct","Nov","Dic"
-    ],
-    dayNames: [
-      "Domingo","Lunes","Martes","Miércoles",
-      "Jueves","Viernes","Sábado"
-    ],
-    dayNamesShort: ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"],
-    dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
-    dateFormat: "dd/mm/yy",
-    firstDay: 1
-  });
-  
-  // Datepicker
-  $("#event_date").datepicker({
-    dateFormat: "dd/mm/yy",
-    minDate: 1
-  });
-
-  // Timepicker
-  $("#event_hour").timepicker({
-    timeFormat: "HH:mm",
-    stepMinute: 15,
-    //hourMin: 9,
-   //hourMax: 18,
-    controlType: "select"
-  });
-
-  // Validación antes de enviar
-  $("#formGol").on("submit", function (e) {
-   
-     
+function validate() {
+  //
+  //
     let hayErrores = false;
+
+    // Resetear clases y textos de error
     $(".error").removeClass("error");
     $(".error-text").text("");
-
-     
 
     const event_name = $("#event_name").val().trim();
     const event_description = $("#event_description").val().trim();
@@ -65,14 +25,19 @@ $(function () {
     const tickets = $("input[name='ticket_type[]']:checked").length;
     const services = $("input[name='event_services[]']:checked").length;
 
-
     const ahora = new Date();
 
-    // NOMBRE
+
+     // NOMBRE
       if (!event_name) {
         
         $("#event_name").addClass("error");
         $("#error-event_name").text("❌ El nombre es obligatorio JS.");
+        hayErrores = true;
+      }
+      if(!/^[a-zA-Z]*$/.test(event_name)){
+        $("#event_name").addClass("error");
+        $("#error-event_name").text("❌ Solo se permiten letras y espacios.");
         hayErrores = true;
       }
 
@@ -184,9 +149,5 @@ $(function () {
       hayErrores = true;
     }
 
-    if (hayErrores) {
-      e.preventDefault(); // bloquea submit si hay errores
-    }
-  });
-
-});
+    return !hayErrores; // Retorna false impidiendo la subida si hayErrores es true
+}

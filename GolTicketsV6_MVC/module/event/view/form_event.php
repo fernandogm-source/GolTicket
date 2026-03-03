@@ -1,13 +1,33 @@
 <?php
-$errores = $_SESSION['errores'] ?? [];
-$old = $_SESSION['old'] ?? $data ?? [];
-unset($_SESSION['errores'], $_SESSION['old']);
+$errores = $errores ?? [];
 
 // $isUpdate = isset($user) && $user !== null && !empty($user['user']);
 $isUpdate = isset($_GET['id']) ? true : false;
 $action = $isUpdate ? "update" : "create";
 
+// Fallback variables for creation or reloading
+$e_name = $event['event_name'] ?? '';
+$e_description = $event['event_description'] ?? '';
+$e_organization = $event['event_organization'] ?? '';
+$e_date = $event['event_date'] ?? '';
+$e_hour = $event['event_hour'] ?? '';
+$e_place = $event['event_place'] ?? '';
+$e_city = $event['event_city'] ?? '';
+$e_duration = $event['event_duration'] ?? '';
+$e_capacity = $event['event_capacity'] ?? '';
+$e_price = $event['event_price'] ?? '';
+$e_disponibility = $event['event_disponibility'] ?? '';
+$e_local = $event['event_local'] ?? '';
+$e_visitor = $event['event_visitor'] ?? '';
+$e_competition = $event['event_competition'] ?? '';
+$e_state = $event['event_state'] ?? '';
 
+// Arrays json (handle decoding if from DB, or arrays if from failed POST)
+$e_services_raw = $event['event_services'] ?? '[]';
+$e_services = is_array($e_services_raw) ? $e_services_raw : (json_decode($e_services_raw, true) ?? []);
+
+$e_ticket_raw = $event['ticket_type'] ?? '[]';
+$e_ticket = is_array($e_ticket_raw) ? $e_ticket_raw : (json_decode($e_ticket_raw, true) ?? []);
 
 
 function errorCampo(string $campo, array $errores): ?string {
@@ -39,37 +59,12 @@ $event_stateAva = [
     'cancelado'     => 'Cancelado',
     'finalizado'    => 'Finalizado'
 ];
-$servicesSelected = $old['event_services'] ?? [];
-if (is_string($servicesSelected)) {
-      $decodificado = json_decode($servicesSelected, true);
-      $servicesSelected = is_array($decodificado) ? $decodificado : [$servicesSelected];
-  }
-$ticketsSelected = $old['ticket_type'] ?? [];
-if (is_string($ticketsSelected)) {
-      $decodificado = json_decode($ticketsSelected, true);
-      $ticketsSelected = is_array($decodificado) ? $decodificado : [$ticketsSelected];
-  }
-$typeSelected = $old['event_competition'] ?? '';
-$stateSelected = $old['event_state'] ?? '';
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GolTickets</title>
-      <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css">
-      <link rel="stylesheet" href="form.css">
-    
-</head>
-<body>
-
 
 <form autocomplete="on" method="post" name="form_event" id="form_event" onsubmit="return validate();"
         action="index.php?page=controller_event&op=<?= $action?>">
-    <input type="hidden" name="event_id" value="<?= $old['event_id'] ?? '' ?>"> 
+    <input type="hidden" name="event_id" value="<?=isset($_GET['id'])?>"> 
 
     <h2>
         <span class="icono">⚽</span>
@@ -78,8 +73,8 @@ $stateSelected = $old['event_state'] ?? '';
 
     <label>Nombre del evento:</label>
     <input type="text" name="event_name" id="event_name" 
-            value="<?= htmlspecialchars($old['event_name'] ?? '') ?>"
-            class="<?= errorCampo('event_name', $errores) ? 'error' : '' ?>" <?= $isUpdate ? 'readonly' : '' ?>
+            value="<?= htmlspecialchars($e_name) ?>"
+            class="<?= errorCampo('event_name', $errores) ? 'error' : '' ?>" <?= $isUpdate ? 'readonly' : '' ?>>
     <div class="error-text" id="error-event_name">
         <?= htmlspecialchars(errorCampo('event_name', $errores) ?? '') ?>
     </div>
@@ -87,14 +82,14 @@ $stateSelected = $old['event_state'] ?? '';
     <label>Descripción del evento:</label>
     <textarea rows="3" type="text" name="event_description" id="event_description"
             class="<?= errorCampo('event_description', $errores) ? 'error' : '' ?>">
-        <?= htmlspecialchars($old['event_description'] ?? '') ?></textarea>
+        <?= htmlspecialchars($e_description) ?></textarea>
     <div class="error-text" id="error-event_description">
         <?= htmlspecialchars(errorCampo('event_description', $errores) ?? '') ?>
     </div>
 
     <label>Organización del evento:</label>
     <input type="text" name="event_organization" id="event_organization" 
-            value="<?= htmlspecialchars($old['event_organization'] ?? '') ?>"
+            value="<?= htmlspecialchars($e_organization) ?>"
             class="<?= errorCampo('event_organization', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_organization">
         <?= htmlspecialchars(errorCampo('event_organization', $errores) ?? '') ?>
@@ -102,7 +97,7 @@ $stateSelected = $old['event_state'] ?? '';
 
     <label>Fecha del evento: (DD/MM/AAAA)</label>
     <input type="text" name="event_date" id="event_date" 
-            value="<?= htmlspecialchars($old['event_date'] ?? '') ?>"
+            value="<?= htmlspecialchars($e_date) ?>"
             class="<?= errorCampo('event_date', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_date">
         <?= htmlspecialchars(errorCampo('event_date', $errores) ?? '') ?>
@@ -110,7 +105,7 @@ $stateSelected = $old['event_state'] ?? '';
 
     <label>Hora del evento:</label>
     <input type="text" name="event_hour" id="event_hour" 
-            value="<?= htmlspecialchars($old['event_hour'] ?? '') ?>"
+            value="<?= htmlspecialchars($e_hour) ?>"
             class="<?= errorCampo('event_hour', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_hour">
         <?= htmlspecialchars(errorCampo('event_hour', $errores) ?? '') ?>
@@ -118,7 +113,7 @@ $stateSelected = $old['event_state'] ?? '';
 
     <label>Lugar del evento:</label>
     <input type="text" name="event_place" id="event_place" 
-            value="<?= htmlspecialchars($old['event_place'] ?? '') ?>"
+            value="<?= htmlspecialchars($e_place) ?>"
             class="<?= errorCampo('event_place', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_place">
         <?= htmlspecialchars(errorCampo('event_place', $errores) ?? '') ?>
@@ -126,7 +121,7 @@ $stateSelected = $old['event_state'] ?? '';
 
     <label>Ciudad del evento:</label>
     <input type="text" name="event_city" id="event_city" 
-            value="<?= htmlspecialchars($old['event_city'] ?? '') ?>"
+            value="<?= htmlspecialchars($e_city) ?>"
             class="<?= errorCampo('event_city', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_city">
         <?= htmlspecialchars(errorCampo('event_city', $errores) ?? '') ?>
@@ -134,7 +129,7 @@ $stateSelected = $old['event_state'] ?? '';
 
     <label>Duración del evento (minutos):</label>
     <input type="text" name="event_duration" id="event_duration" 
-            value="<?= htmlspecialchars($old['event_duration'] ?? '') ?>"
+            value="<?= htmlspecialchars($e_duration) ?>"
             class="<?= errorCampo('event_duration', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_duration">
         <?= htmlspecialchars(errorCampo('event_duration', $errores) ?? '') ?>
@@ -142,7 +137,7 @@ $stateSelected = $old['event_state'] ?? '';
 
     <label>Capacidad del evento:</label>
     <input type="text" name="event_capacity" id="event_capacity" 
-            value="<?= htmlspecialchars($old['event_capacity'] ?? '') ?>"
+            value="<?= htmlspecialchars($e_capacity) ?>"
             class="<?= errorCampo('event_capacity', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_capacity">
         <?= htmlspecialchars(errorCampo('event_capacity', $errores) ?? '') ?>
@@ -150,7 +145,7 @@ $stateSelected = $old['event_state'] ?? '';
 
     <label>Precio del evento (€):</label>
     <input type="text" name="event_price" id="event_price" 
-            value="<?= htmlspecialchars($old['event_price'] ?? '') ?>"
+            value="<?= htmlspecialchars($e_price) ?>"
             class="<?= errorCampo('event_price', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_price">
         <?= htmlspecialchars(errorCampo('event_price', $errores) ?? '') ?>
@@ -158,7 +153,7 @@ $stateSelected = $old['event_state'] ?? '';
 
     <label>Entradas disponibles:</label>
     <input type="text" name="event_disponibility" id="event_disponibility" 
-            value="<?= htmlspecialchars($old['event_disponibility'] ?? '') ?>"
+            value="<?= htmlspecialchars($e_disponibility) ?>"
             class="<?= errorCampo('event_disponibility', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_disponibility">
         <?= htmlspecialchars(errorCampo('event_disponibility', $errores) ?? '') ?>
@@ -170,7 +165,7 @@ $stateSelected = $old['event_state'] ?? '';
             <?php foreach ($event_servicesAva as $valor => $label): ?>
             <label class="opcion">
                 <input type="checkbox" name="event_services[]" value="<?= $valor ?>"
-                       <?= in_array($valor, $servicesSelected) ? 'checked' : '' ?>>
+                       <?= in_array($valor, $e_services) ? 'checked' : '' ?>>
                 <?= $label ?>
             </label>
         <?php endforeach; ?>
@@ -182,7 +177,7 @@ $stateSelected = $old['event_state'] ?? '';
 
     <label>Equipo local:</label>
     <input type="text" name="event_local" id="event_local" 
-            value="<?= htmlspecialchars($old['event_local'] ?? '') ?>"
+            value="<?= htmlspecialchars($e_local) ?>"
             class="<?= errorCampo('event_local', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_local">
         <?= htmlspecialchars(errorCampo('event_local', $errores) ?? '') ?>
@@ -190,7 +185,7 @@ $stateSelected = $old['event_state'] ?? '';
 
     <label>Equipo visitante:</label>
     <input type="text" name="event_visitor" id="event_visitor" 
-            value="<?= htmlspecialchars($old['event_visitor'] ?? '') ?>"
+            value="<?= htmlspecialchars($e_visitor) ?>"
             class="<?= errorCampo('event_visitor', $errores) ? 'error' : '' ?>">
     <div class="error-text" id="error-event_visitor">
         <?= htmlspecialchars(errorCampo('event_visitor', $errores) ?? '') ?>
@@ -201,7 +196,7 @@ $stateSelected = $old['event_state'] ?? '';
             <?php foreach ($ticketTypeAva as $valor => $label): ?>
             <label class="opcion">
                 <input type="checkbox" name="ticket_type[]" value="<?= $valor ?>"
-                       <?= in_array($valor, $ticketsSelected) ? 'checked' : '' ?>>
+                       <?= in_array($valor, $e_ticket) ? 'checked' : '' ?>>
                 <?= $label ?>
             </label>
         <?php endforeach; ?>
@@ -215,7 +210,7 @@ $stateSelected = $old['event_state'] ?? '';
          <?php foreach ($event_typeAva as $valor => $label): ?>
             <label class="opcion">
                 <input type="radio" name="event_competition" value="<?= $valor ?>"
-                       <?= $typeSelected === $valor ? 'checked' : '' ?>>
+                       <?= $e_competition === $valor ? 'checked' : '' ?>>
                 <?= $label ?>
             </label>
         <?php endforeach; ?>
@@ -229,7 +224,7 @@ $stateSelected = $old['event_state'] ?? '';
      <?php foreach ($event_stateAva as $valor => $label): ?>
             <label class="opcion">
                 <input type="radio" name="event_state" value="<?= $valor ?>"
-                       <?= $stateSelected === $valor ? 'checked' : '' ?>>
+                       <?= $e_state === $valor ? 'checked' : '' ?>>
                 <?= $label ?>
             </label>
         <?php endforeach; ?>
@@ -245,15 +240,3 @@ $stateSelected = $old['event_state'] ?? '';
 </div>
 
 </form>
-
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!-- jQuery UI -->
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-  <!-- Timepicker Addon -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.js"></script>
-  <!-- JS -->
-  <script src="datepicker.js"></script>
-
-</body>
-</html>
