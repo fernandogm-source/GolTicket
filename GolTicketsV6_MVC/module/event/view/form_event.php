@@ -64,8 +64,9 @@ $event_stateAva = [
 
 <form autocomplete="on" method="post" name="form_event" id="form_event" onsubmit="return validate();"
         action="index.php?page=controller_event&op=<?= $action?>">
-    <input type="hidden" name="event_id" value="<?=isset($_GET['id'])?>"> 
-
+    
+    <input type="hidden" name="event_id" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>">
+    
     <h2>
         <span class="icono">⚽</span>
         <?= $isUpdate ? 'Modificar evento' : 'Evento nuevo'?>
@@ -236,7 +237,7 @@ $event_stateAva = [
     <br><br>
     <div class="form-buttons">
     <a href="index.php?page=controller_event&op=list">Volver</a>
-    <input type="submit" name="<?= $action?>" id="<?= $action?>" value="<?= $isUpdate ? 'Modificar evento' : 'Crear evento'?>" /></td>
+    <input type="submit" name="<?= $action?>" id="<?= $action?>" value="<?= $isUpdate ? 'Modificar evento' : 'Crear evento'?>" />
 </div>
 
 </form>

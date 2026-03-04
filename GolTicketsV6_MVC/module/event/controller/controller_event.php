@@ -49,12 +49,16 @@ switch ($_GET['op']) {
                 }
 
                 if ($rdo) {
-                    /* echo '<script language="javascript">setTimeout(() => {
-                            toastr.success("Creado en la base de datos correctamente");
-                        }, 1000);</script>'; */
-                    echo '<script language="javascript">setTimeout(() => {
-                            window.location.href = "index.php?page=controller_user&op=list";
-                        }, 2000);</script>';
+                    echo '<script>
+                    Swal.fire({
+                        icon: "success",
+                        title: "Creado",
+                        text: "Evento creado correctamente",
+                        confirmButtonText: "Aceptar"
+                    }).then(() => {
+                        window.location.href = "index.php?page=controller_event&op=list";
+                    });
+                    </script>';
                 }
                 else {
                     $callback = 'index.php?page=503';
@@ -98,7 +102,7 @@ switch ($_GET['op']) {
             if (empty($errores)) {
                 try {
                     $daoevent = new DAOevent();
-                    $rdo = $daoevent->insert_event($_POST);
+                    $rdo = $daoevent->update_event($_POST);
                 }
                 catch (Exception $e) {
                     $callback = 'index.php?page=503';
@@ -106,12 +110,16 @@ switch ($_GET['op']) {
                 }
 
                 if ($rdo) {
-                    /* echo '<script language="javascript">setTimeout(() => {
-                            toastr.success("Creado en la base de datos correctamente");
-                        }, 1000);</script>'; */
-                    echo '<script language="javascript">setTimeout(() => {
-                            window.location.href = "index.php?page=controller_user&op=list";
-                        }, 2000);</script>';
+                    echo '<script>
+                    Swal.fire({
+                        icon: "success",
+                        title: "Modificado",
+                        text: "Evento modificado correctamente",
+                        confirmButtonText: "Aceptar"
+                    }).then(() => {
+                        window.location.href = "index.php?page=controller_event&op=list";
+                    });
+                    </script>';
                 }
                 else {
                     $callback = 'index.php?page=503';
@@ -145,9 +153,11 @@ switch ($_GET['op']) {
 
         if (!isset($_POST['update'])) {
             try {
-                $daouser = new DAOevent();
-                $rdo = $daouser->select_event($_GET['id']);
-                $user = $rdo;
+                $daoevent = new DAOevent();
+                /* $data = 'hola crtl user';
+                    die('<script>console.log('.json_encode( $_GET['id'] ) .');</script>'); */
+                $rdo = $daoevent->select_event($_GET['id']);
+                $event = $rdo;
             }
             catch (Exception $e) {
                 $callback = 'index.php?page=503';
@@ -197,12 +207,16 @@ switch ($_GET['op']) {
                 die('<script>window.location.href = "' . $callback . '";</script>');
             }
             if ($rdo) {
-                /* echo '<script language="javascript">setTimeout(() => {
-                        toastr.success("Borrado en la base de datos correctamente");
-                    }, 1000);</script>'; */
-                echo '<script language="javascript">setTimeout(() => {
+                echo '<script>
+                    Swal.fire({
+                        icon: "success",
+                        title: "Borrado",
+                        text: "Evento borrado correctamente",
+                        confirmButtonText: "Aceptar"
+                    }).then(() => {
                         window.location.href = "index.php?page=controller_event&op=list";
-                    }, 2000);</script>';
+                    });
+                    </script>';
             }
             else {
                 $callback = 'index.php?page=503';

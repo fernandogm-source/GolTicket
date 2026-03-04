@@ -35,7 +35,7 @@ function validate() {
         $("#error-event_name").text("❌ El nombre es obligatorio JS.");
         hayErrores = true;
       }
-      if(!/^[a-zA-Z]*$/.test(event_name)){
+      if(!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*$/.test(event_name)){
         $("#event_name").addClass("error");
         $("#error-event_name").text("❌ Solo se permiten letras y espacios.");
         hayErrores = true;
@@ -47,11 +47,21 @@ function validate() {
       $("#error-event_description").text("❌ La descripción es obligatoria.");
       hayErrores = true;
     }
+    if(!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*$/.test(event_description)){
+      $("#event_description").addClass("error");
+      $("#error-event_description").text("❌ Solo se permiten letras y espacios.");
+      hayErrores = true;
+    }
 
     // ORGANIZACION
     if (!event_organization) {
       $("#event_organization").addClass("error");
       $("#error-event_organization").text("❌ La organización es obligatoria.");
+      hayErrores = true;
+    }
+    if(!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*$/.test(event_organization)){
+      $("#event_organization").addClass("error");
+      $("#error-event_organization").text("❌ Solo se permiten letras y espacios.");
       hayErrores = true;
     }
 
@@ -75,11 +85,21 @@ function validate() {
       $("#error-event_place").text("❌ El lugar es obligatorio.");
       hayErrores = true;
     }
+    if(!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*$/.test(event_place)){
+      $("#event_place").addClass("error");
+      $("#error-event_place").text("❌ Solo se permiten letras y espacios.");
+      hayErrores = true;
+    }
 
     // CIUDAD
     if (!event_city) {
       $("#event_city").addClass("error");
       $("#error-event_city").text("❌ La ciudad es obligatoria.");
+      hayErrores = true;
+    }
+    if(!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*$/.test(event_city)){
+      $("#event_city").addClass("error");
+      $("#error-event_city").text("❌ Solo se permiten letras y espacios.");
       hayErrores = true;
     }
 
@@ -117,11 +137,21 @@ function validate() {
       $("#error-event_local").text("❌ El equipo local es obligatorio.");
       hayErrores = true;
     }
+    if(!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\d]*$/.test(event_local)){
+      $("#event_local").addClass("error");
+      $("#error-event_local").text("❌ Solo se permiten letras y espacios y numeros.");
+      hayErrores = true;
+    }
 
     // EQUIPO VISITANTE
     if (!event_visitor) {
       $("#event_visitor").addClass("error");
       $("#error-event_visitor").text("❌ El equipo visitante es obligatorio.");
+      hayErrores = true;
+    }
+    if(!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\d]*$/.test(event_visitor)){
+      $("#event_visitor").addClass("error");
+      $("#error-event_visitor").text("❌ Solo se permiten letras , espacios y numeros.");
       hayErrores = true;
     }
 
