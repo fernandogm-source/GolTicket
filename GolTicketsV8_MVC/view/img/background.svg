@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ddeeff"/>
+      <stop offset="100%" style="stop-color:#c5dcf5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bgGrad)"/>
+
+  <!-- Faint field lines -->
+  <rect x="360" y="140" width="1200" height="800" fill="none" stroke="#a0c4e8" stroke-width="2" opacity="0.4"/>
+  <line x1="960" y1="140" x2="960" y2="940" stroke="#a0c4e8" stroke-width="1.5" opacity="0.35"/>
+  <ellipse cx="960" cy="540" rx="120" ry="120" fill="none" stroke="#a0c4e8" stroke-width="1.5" opacity="0.35"/>
+  <circle cx="960" cy="540" r="6" fill="#a0c4e8" opacity="0.4"/>
+
+  <!-- Penalty boxes -->
+  <rect x="360" y="340" width="280" height="400" fill="none" stroke="#a0c4e8" stroke-width="1.5" opacity="0.3"/>
+  <rect x="1280" y="340" width="280" height="400" fill="none" stroke="#a0c4e8" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Goal areas -->
+  <rect x="360" y="440" width="100" height="200" fill="none" stroke="#a0c4e8" stroke-width="1.5" opacity="0.25"/>
+  <rect x="1460" y="440" width="100" height="200" fill="none" stroke="#a0c4e8" stroke-width="1.5" opacity="0.25"/>
+
+  <!-- Corner arcs -->
+  <path d="M360,140 Q380,140 380,160" fill="none" stroke="#a0c4e8" stroke-width="1.5" opacity="0.3"/>
+  <path d="M1560,140 Q1540,140 1540,160" fill="none" stroke="#a0c4e8" stroke-width="1.5" opacity="0.3"/>
+  <path d="M360,940 Q380,940 380,920" fill="none" stroke="#a0c4e8" stroke-width="1.5" opacity="0.3"/>
+  <path d="M1560,940 Q1540,940 1540,920" fill="none" stroke="#a0c4e8" stroke-width="1.5" opacity="0.3"/>
+</svg>
