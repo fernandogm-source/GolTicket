@@ -1,0 +1,812 @@
+/* =====================================================
+   FÚTBOL EVENTOS — style.css
+   Tema: Fresco y deportivo (Azul / Blanco)
+   ===================================================== */
+
+/* --- Variables de color --- */
+:root {
+    --azul-oscuro:   #0d2b5e;
+    --azul-medio:    #1a4a9e;
+    --azul-claro:    #4da6ff;
+    --azul-fondo:    #ddeeff;
+    --blanco:        #ffffff;
+    --gris-claro:    #f4f8ff;
+    --gris-borde:    #c5d8f0;
+    --texto-oscuro:  #0a1e3d;
+    --texto-medio:   #2a5fa8;
+    --sombra:        rgba(13, 43, 94, 0.15);
+    --rojo-acento:   #e03030;
+    --verde-acento:  #1a8c3a;
+    --amarillo:      #f0c030;
+}
+
+/* --- Reset y base --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.error {
+    color: var(--rojo-acento);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 10pt;
+    font-weight: 600;
+}
+
+body {
+    background-color: var(--azul-fondo);
+    background-image: url(../img/background.svg);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: var(--texto-oscuro);
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 26pt;
+    color: var(--azul-oscuro);
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+h2 {
+    font-size: 20pt;
+    color: var(--azul-medio);
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+h3 {
+    font-size: 14pt;
+    color: var(--azul-oscuro);
+    font-weight: 600;
+}
+
+a {
+    color: var(--azul-medio);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--azul-claro);
+    text-decoration: underline;
+}
+
+/* --- Wrapper principal --- */
+#wrapper {
+    width: 820px;
+    margin: 20px auto;
+    background-color: var(--blanco);
+    border-radius: 10px;
+    box-shadow: 0 6px 32px var(--sombra);
+    overflow: hidden;
+    border: 1px solid var(--gris-borde);
+}
+
+/* --- Header --- */
+#header {
+    height: 120px;
+    background-image: url(../img/header.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+/* --- Menú de navegación --- */
+#menu {
+    background-image: url(../img/menu.svg);
+    background-repeat: repeat-x;
+    background-color: var(--azul-medio);
+    height: 38px;
+    padding-top: 8px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+#menu a {
+    color: var(--blanco);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#menu a:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+    color: var(--azul-claro);
+    text-decoration: none;
+}
+
+/* --- Contenido principal --- */
+#contenido {
+    padding: 24px 28px;
+    min-height: 300px;
+}
+
+/* --- Footer --- */
+#footer {
+    background-image: url(../img/footer.svg);
+    background-repeat: repeat-x;
+    background-color: var(--azul-medio);
+    height: 38px;
+    padding-top: 8px;
+    text-align: center;
+    letter-spacing: 1px;
+    font-size: 13px;
+}
+
+#footer a {
+    color: var(--blanco);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0 6px;
+    transition: color 0.2s ease;
+}
+
+#footer a:hover {
+    color: var(--azul-claro);
+    text-decoration: underline;
+}
+
+/* =====================================================
+   BOTONES
+   ===================================================== */
+
+/* Botón azul principal */
+.Button_blue {
+    background-color: var(--azul-medio);
+    border-radius: 6px;
+    border: none;
+    display: inline-block;
+    cursor: pointer;
+    color: var(--blanco);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 24px;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    box-shadow: 0 3px 10px rgba(26, 74, 158, 0.35);
+}
+
+.Button_blue:hover {
+    background-color: var(--azul-claro);
+    box-shadow: 0 5px 16px rgba(77, 166, 255, 0.45);
+    text-decoration: none;
+    color: var(--blanco);
+}
+
+.Button_blue:active {
+    position: relative;
+    top: 1px;
+    box-shadow: none;
+}
+
+/* Botón verde (confirmar / guardar) */
+.Button_green {
+    background-color: var(--verde-acento);
+    border-radius: 6px;
+    border: none;
+    display: inline-block;
+    cursor: pointer;
+    color: var(--blanco);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 24px;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    box-shadow: 0 3px 10px rgba(26, 140, 58, 0.35);
+}
+
+.Button_green:hover {
+    background-color: #22b04a;
+    box-shadow: 0 5px 16px rgba(26, 140, 58, 0.45);
+    text-decoration: none;
+    color: var(--blanco);
+}
+
+.Button_green:active {
+    position: relative;
+    top: 1px;
+    box-shadow: none;
+}
+
+/* Botón rojo (eliminar / cancelar) */
+.Button_red {
+    background-color: var(--rojo-acento);
+    border-radius: 6px;
+    border: none;
+    display: inline-block;
+    cursor: pointer;
+    color: var(--blanco);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 24px;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    box-shadow: 0 3px 10px rgba(224, 48, 48, 0.35);
+}
+
+.Button_red:hover {
+    background-color: #ff4444;
+    box-shadow: 0 5px 16px rgba(224, 48, 48, 0.45);
+    text-decoration: none;
+    color: var(--blanco);
+}
+
+.Button_red:active {
+    position: relative;
+    top: 1px;
+    box-shadow: none;
+}
+
+/* =====================================================
+   TABLAS DE EVENTOS
+   ===================================================== */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+}
+
+table thead {
+    background-color: var(--azul-oscuro);
+    color: var(--blanco);
+}
+
+table thead th {
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+table tbody tr {
+    border-bottom: 1px solid var(--gris-borde);
+    transition: background-color 0.15s ease;
+}
+
+table tbody tr:hover {
+    background-color: #eaf3ff;
+}
+
+table tbody td {
+    padding: 10px 14px;
+    color: var(--texto-oscuro);
+}
+
+/* =====================================================
+   FORMULARIOS
+   ===================================================== */
+
+form label {
+    display: block;
+    font-weight: 600;
+    color: var(--azul-oscuro);
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="number"],
+form input[type="date"],
+form input[type="time"],
+form textarea,
+form select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid var(--gris-borde);
+    border-radius: 6px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
+    color: var(--texto-oscuro);
+    background-color: var(--gris-claro);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 14px;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+    outline: none;
+    border-color: var(--azul-claro);
+    box-shadow: 0 0 0 3px rgba(77, 166, 255, 0.2);
+    background-color: var(--blanco);
+}
+
+/* =====================================================
+   TARJETAS / CARDS DE EVENTOS
+   ===================================================== */
+
+.event-card {
+    background-color: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.event-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-color: var(--azul-medio);
+    border-radius: 4px 0 0 4px;
+}
+
+.event-card:hover {
+    box-shadow: 0 6px 20px var(--sombra);
+    transform: translateY(-2px);
+}
+
+.event-card h3 {
+    color: var(--azul-oscuro);
+    margin-bottom: 6px;
+}
+
+.event-card .event-meta {
+    font-size: 13px;
+    color: var(--texto-medio);
+    margin-bottom: 4px;
+}
+
+/* =====================================================
+   PÁGINAS DE ERROR (404 / 503)
+   ===================================================== */
+
+.error-page {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.error-page img {
+    max-width: 500px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.error-page h1 {
+    font-size: 28pt;
+    color: var(--azul-oscuro);
+    margin-bottom: 10px;
+}
+
+.error-page p {
+    color: var(--texto-medio);
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+/* =====================================================
+   BADGES / ETIQUETAS
+   ===================================================== */
+
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.badge-blue    { background-color: var(--azul-claro); color: var(--blanco); }
+.badge-green   { background-color: var(--verde-acento); color: var(--blanco); }
+.badge-red     { background-color: var(--rojo-acento); color: var(--blanco); }
+.badge-yellow  { background-color: var(--amarillo); color: var(--azul-oscuro); }
+
+/* =====================================================
+   UTILIDADES
+   ===================================================== */
+
+.text-center  { text-align: center; }
+.text-right   { text-align: right; }
+.mt-10        { margin-top: 10px; }
+.mt-20        { margin-top: 20px; }
+.mb-10        { margin-bottom: 10px; }
+.mb-20        { margin-bottom: 20px; }
+.p-20         { padding: 20px; }
+
+/* =====================================================
+   PÁGINA DE INICIO
+   ===================================================== */
+
+.inicio-banner {
+    display: block;
+    width: 100%;
+    max-width: 760px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 18px var(--sombra);
+}
+
+/* =====================================================
+   LISTA DE EVENTOS (list_event.php)
+   ===================================================== */
+
+.list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--gris-borde);
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.list-header h3 {
+    font-size: 18pt;
+    color: var(--azul-oscuro);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.list-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.list-actions a {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-crear {
+    background-color: var(--azul-medio);
+    color: var(--blanco);
+    box-shadow: 0 2px 8px rgba(26,74,158,0.3);
+}
+.btn-crear:hover { background-color: var(--azul-claro); color: var(--blanco); text-decoration: none; }
+
+.btn-dummies {
+    background-color: var(--amarillo);
+    color: var(--azul-oscuro);
+    box-shadow: 0 2px 8px rgba(240,192,48,0.3);
+}
+.btn-dummies:hover { background-color: #f5d060; color: var(--azul-oscuro); text-decoration: none; }
+
+.btn-delete-all {
+    background-color: var(--rojo-acento);
+    color: var(--blanco);
+    box-shadow: 0 2px 8px rgba(224,48,48,0.3);
+}
+.btn-delete-all:hover { background-color: #ff4444; color: var(--blanco); text-decoration: none; }
+
+/* Tabla de lista — cabeceras con <tr><th> mixto */
+#contenido table tr:first-child td,
+#contenido table tr:first-child th {
+    background-color: var(--azul-oscuro);
+    color: var(--blanco);
+    font-weight: 700;
+    padding: 12px 14px;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+}
+
+#contenido table td {
+    padding: 10px 14px;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--gris-borde);
+    font-size: 14px;
+}
+
+/* Botones pequeños dentro de tabla */
+#contenido table .Button_blue,
+#contenido table .Button_green,
+#contenido table .Button_red {
+    padding: 5px 14px;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+/* Mensaje vacío */
+.empty-list {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--texto-medio);
+    font-size: 15px;
+    font-style: italic;
+}
+
+/* =====================================================
+   FORMULARIO DE EVENTO (form_event.php)
+   ===================================================== */
+
+#form_event {
+    padding: 10px 4px;
+}
+
+#form_event h2 {
+    border-left: 4px solid var(--azul-medio);
+    padding-left: 12px;
+    margin-bottom: 22px;
+}
+
+#form_event label {
+    display: block;
+    font-weight: 600;
+    color: var(--azul-oscuro);
+    margin-bottom: 4px;
+    margin-top: 14px;
+    font-size: 13.5px;
+}
+
+#form_event input[type="text"],
+#form_event textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid var(--gris-borde);
+    border-radius: 6px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
+    color: var(--texto-oscuro);
+    background-color: var(--gris-claro);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 2px;
+}
+
+#form_event input[type="text"]:focus,
+#form_event textarea:focus {
+    outline: none;
+    border-color: var(--azul-claro);
+    box-shadow: 0 0 0 3px rgba(77, 166, 255, 0.2);
+    background-color: var(--blanco);
+}
+
+#form_event input[readonly] {
+    background-color: #e8eef8;
+    color: #6a7fa8;
+    cursor: not-allowed;
+}
+
+#form_event textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Error de campo inline */
+.error-text {
+    color: var(--rojo-acento);
+    font-size: 12px;
+    font-weight: 600;
+    min-height: 18px;
+    margin-bottom: 4px;
+}
+
+/* Inputs con error marcado */
+#form_event input.error,
+#form_event textarea.error {
+    border-color: var(--rojo-acento);
+    background-color: #fff5f5;
+    box-shadow: 0 0 0 3px rgba(224, 48, 48, 0.15);
+}
+
+/* Grupos de checkboxes y radios */
+.checkbox-group,
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 0 4px 0;
+}
+
+.checkbox-group label.opcion,
+.radio-group label.opcion {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--gris-claro);
+    border: 1.5px solid var(--gris-borde);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--texto-oscuro);
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+    margin-top: 0;
+}
+
+.checkbox-group label.opcion:hover,
+.radio-group label.opcion:hover {
+    background-color: #d8ecff;
+    border-color: var(--azul-claro);
+}
+
+.checkbox-group input[type="checkbox"]:checked + *,
+.radio-group input[type="radio"]:checked + * {
+    font-weight: 700;
+}
+
+.checkbox-group label.opcion:has(input:checked),
+.radio-group label.opcion:has(input:checked) {
+    background-color: var(--azul-medio);
+    border-color: var(--azul-medio);
+    color: var(--blanco);
+}
+
+/* Botones submit del formulario */
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid var(--gris-borde);
+}
+
+#form_event input[type="button"] {
+    background-color: var(--azul-medio);
+    color: var(--blanco);
+    border: none;
+    border-radius: 6px;
+    padding: 10px 28px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 3px 10px rgba(26, 74, 158, 0.35);
+}
+
+#form_event input[type="button"]:hover {
+    background-color: var(--azul-claro);
+    box-shadow: 0 5px 16px rgba(77, 166, 255, 0.4);
+}
+
+/* =====================================================
+   FICHA DE EVENTO (read_event.php)
+   ===================================================== */
+
+.read-event-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 14px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px var(--sombra);
+}
+
+.read-event-table tr:nth-child(odd) td:first-child {
+    background-color: var(--azul-oscuro);
+    color: var(--blanco);
+}
+
+.read-event-table tr:nth-child(even) td:first-child {
+    background-color: var(--azul-medio);
+    color: var(--blanco);
+}
+
+.read-event-table td:first-child {
+    font-weight: 700;
+    padding: 11px 16px;
+    width: 200px;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+}
+
+.read-event-table td:last-child {
+    padding: 11px 16px;
+    background-color: var(--blanco);
+    border-bottom: 1px solid var(--gris-borde);
+    color: var(--texto-oscuro);
+}
+
+.read-event-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* =====================================================
+   PÁGINAS DE CONFIRMACIÓN (delete, delete_all, dummies)
+   ===================================================== */
+
+.confirm-box {
+    max-width: 560px;
+    margin: 40px auto;
+    background-color: var(--gris-claro);
+    border: 1px solid var(--gris-borde);
+    border-radius: 12px;
+    padding: 36px 32px;
+    text-align: center;
+    box-shadow: 0 4px 20px var(--sombra);
+}
+
+.confirm-box h3 {
+    font-size: 17px;
+    color: var(--azul-oscuro);
+    margin-bottom: 28px;
+    line-height: 1.5;
+}
+
+.confirm-box .confirm-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.confirm-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+/* =====================================================
+   PÁGINAS ESTÁTICAS (aboutus, services, contactus)
+   ===================================================== */
+
+.page-static {
+    padding: 28px 32px;
+}
+
+.page-static h1 {
+    font-size: 22pt;
+    color: var(--azul-oscuro);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--azul-medio);
+}
+
+.page-static p {
+    color: var(--texto-oscuro);
+    font-size: 15px;
+    line-height: 1.75;
+    margin-bottom: 16px;
+    text-align: justify;
+}
+
+/* =====================================================
+   PÁGINAS DE ERROR (error404, error503)
+   ===================================================== */
+
+.error-page {
+    text-align: center;
+    padding: 40px 28px 32px;
+}
+
+.error-page img {
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto 20px;
+    display: block;
+    border-radius: 10px;
+}
+
+.error-page a.Button_blue {
+    margin-top: 16px;
+    display: inline-block;
+}

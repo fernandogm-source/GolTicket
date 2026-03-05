@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="200" viewBox="0 0 760 200">
+  <defs>
+    <linearGradient id="wGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8f4ff"/>
+      <stop offset="100%" style="stop-color:#cce5ff"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="3" stdDeviation="4" flood-color="#0a3a7a" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="760" height="200" rx="12" fill="url(#wGrad)"/>
+  <!-- Top border accent -->
+  <rect x="0" y="0" width="760" height="5" rx="12" fill="#1a4a9e"/>
+  <!-- Football icon -->
+  <g transform="translate(80, 100)" filter="url(#shadow)">
+    <circle cx="0" cy="0" r="45" fill="#f5f5f5" stroke="#ddd" stroke-width="1.5"/>
+    <path d="M0,-45 L10,-16 L32,-29 Z" fill="#1a1a2e"/>
+    <path d="M0,-45 L-10,-16 L-32,-29 Z" fill="#1a1a2e"/>
+    <path d="M35,26 L12,10 L32,-29 Z" fill="#1a1a2e"/>
+    <path d="M-35,26 L-12,10 L-32,-29 Z" fill="#1a1a2e"/>
+    <path d="M0,45 L12,10 L-12,10 Z" fill="#1a1a2e"/>
+  </g>
+  <!-- Text -->
+  <text x="400" y="85" font-family="'Georgia', serif" font-size="30" font-weight="bold"
+        text-anchor="middle" fill="#0d2b5e" letter-spacing="2">¡Bienvenido a <tspan fill="#1a4a9e">Gol Tickets</tspan>!</text>
+  <text x="400" y="125" font-family="'Arial', sans-serif" font-size="15"
+        text-anchor="middle" fill="#2a5fa8" letter-spacing="1">Consulta, crea y gestiona eventos de fútbol de todo el mundo</text>
+  <!-- Decorative balls at corners -->
+  <circle cx="700" cy="40" r="18" fill="#1a4a9e" opacity="0.08"/>
+  <circle cx="700" cy="160" r="12" fill="#4da6ff" opacity="0.1"/>
+  <circle cx="730" cy="100" r="8" fill="#1a4a9e" opacity="0.07"/>
+</svg>
