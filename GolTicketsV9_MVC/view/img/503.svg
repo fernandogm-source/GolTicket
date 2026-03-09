@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <defs>
+    <linearGradient id="bgGrad503" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8f4ff"/>
+      <stop offset="100%" style="stop-color:#d0e8ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" rx="16" fill="url(#bgGrad503)"/>
+
+  <!-- Football on repair stand -->
+  <g transform="translate(300, 160)">
+    <!-- Stand / tripod -->
+    <line x1="0" y1="55" x2="-50" y2="110" stroke="#1a4a9e" stroke-width="6" stroke-linecap="round"/>
+    <line x1="0" y1="55" x2="50" y2="110" stroke="#1a4a9e" stroke-width="6" stroke-linecap="round"/>
+    <line x1="0" y1="55" x2="0" y2="110" stroke="#1a4a9e" stroke-width="6" stroke-linecap="round"/>
+    <!-- Ball -->
+    <circle cx="0" cy="0" r="52" fill="#f5f5f5" stroke="#ddd" stroke-width="2"/>
+    <path d="M0,-52 L11,-18 L37,-33 Z" fill="#1a1a2e"/>
+    <path d="M0,-52 L-11,-18 L-37,-33 Z" fill="#1a1a2e"/>
+    <path d="M40,29 L15,11 L37,-33 Z" fill="#1a1a2e"/>
+    <path d="M-40,29 L-15,11 L-37,-33 Z" fill="#1a1a2e"/>
+    <path d="M0,52 L15,11 L-15,11 Z" fill="#1a1a2e"/>
+    <!-- Repair patch on ball -->
+    <rect x="-8" y="-8" width="16" height="16" rx="3" fill="#f0a500" opacity="0.9" transform="rotate(15)"/>
+    <text x="0" y="4" font-family="Arial" font-size="10" text-anchor="middle" fill="white" font-weight="bold" transform="rotate(15)">FIX</text>
+    <!-- Wrench -->
+    <g transform="translate(50, -50) rotate(35)">
+      <rect x="-5" y="-30" width="10" height="45" rx="4" fill="#f0a500"/>
+      <rect x="-12" y="-38" width="24" height="14" rx="5" fill="#f0a500"/>
+      <rect x="-5" y="-38" width="10" height="8" rx="2" fill="#cc8800"/>
+      <rect x="-12" y="15" width="24" height="10" rx="5" fill="#f0a500"/>
+    </g>
+  </g>
+
+  <!-- Text -->
+  <text x="300" y="315" font-family="'Georgia', serif" font-size="60" font-weight="bold"
+        text-anchor="middle" fill="#0d2b5e">503</text>
+  <text x="300" y="348" font-family="'Arial', sans-serif" font-size="17"
+        text-anchor="middle" fill="#2a5fa8">Servicio en mantenimiento</text>
+  <text x="300" y="372" font-family="'Arial', sans-serif" font-size="14"
+        text-anchor="middle" fill="#5a8ad0">Estamos preparando el campo. Vuelve pronto 🔧</text>
+</svg>
