@@ -1,0 +1,37 @@
+<div id="contenido">
+
+    <!-- ── HERO ──────────────────────────────────────── -->
+    <section class="hero">
+        <img class="hero-img"
+             src="view/img/home/home.png"
+             alt="Santiago Bernabéu de noche"/>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="hero-badge">Partido Destacado</span>
+            <h2 class="hero-title">
+                El Clásico:<br>
+                <span class="hero-title-accent">Real Madrid vs FC Barcelona</span>
+            </h2>
+            <p class="hero-desc">
+                Vive la histórica rivalidad en directo en el Santiago Bernabéu.<br>
+                Sé testigo de la historia del fútbol.
+            </p>
+            <div class="hero-actions">
+                <a class="btn-primary" href="index.php?page=controller_home&op=view">
+                    Ver Entradas
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </a>
+                <a class="btn-ghost" href="index.php?page=controller_home&op=view">Ver Calendario</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── CATEGORIES (cargadas por AJAX) ───────────── -->
+    <section class="categories">
+        <h3 class="section-title">Explorar por Competición</h3>
+        <div id="containerCategories" class="categories-grid">
+            <!-- Los cards se inyectan aquí desde controller_home.js -->
+        </div>
+    </section>
+
+</div><!-- /contenido -->
