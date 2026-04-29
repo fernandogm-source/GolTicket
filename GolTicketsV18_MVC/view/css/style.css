@@ -1420,3 +1420,69 @@ img { display: block; max-width: 100%; }
 .leaflet-bottom {
     z-index: 40 !important;
 }
+
+/* =====================================================
+   SEARCH DROPDOWN (header autocomplete)
+   ===================================================== */
+
+.search-wrapper { position: relative; }
+
+.search-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    z-index: 100;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Cabecera de grupo (Partidos / Equipos / Ciudades / Competiciones) */
+.search-group-label {
+    padding: 8px 14px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-dim);
+}
+
+/* Cada fila de resultado */
+.search-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.search-item:hover,
+.search-item.active {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.search-item-icon {
+    font-size: 18px;
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+.search-item-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Separador visual entre grupos */
+.search-group-label + .search-item ~ .search-group-label {
+    border-top: 1px solid var(--border);
+    margin-top: 4px;
+    padding-top: 10px;
+}

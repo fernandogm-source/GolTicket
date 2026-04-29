@@ -13,7 +13,10 @@
         <div class="header-search">
             <div class="search-wrapper">
                 <span class="material-symbols-outlined search-icon">search</span>
-                <input class="search-input" type="text" placeholder="Buscar eventos, equipos o estadios..."/>
+                <input id="header-search-input" class="search-input" type="text"
+                       placeholder="Buscar eventos, equipos o estadios..."
+                       autocomplete="off"/>
+                <div id="header-search-dropdown" class="search-dropdown" style="display:none;"></div>
             </div>
         </div>
 
