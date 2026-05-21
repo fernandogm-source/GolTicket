@@ -1,6 +1,7 @@
 <?php
 $path = $_SERVER['DOCUMENT_ROOT'] . '/GolTicketsV22_MVC/';
 include($path . "module/auth/model/DAOAuth.php");
+include($path . "/model/middleware_auth.php");
 
 $op = $_GET['op'] ?? 'view';
 
@@ -80,7 +81,10 @@ switch ($op) {
                 exit;
             } else {
                 if (password_verify($_POST['login_password'], $rdo['password'])) {
-                    echo json_encode("ok");
+                    $token= create_token($rdo["username"]);
+                    $_SESSION['username'] = $rdo['username']; 
+                    $_SESSION['tiempo'] = time();
+                    echo json_encode($token);
                     exit;
                 } else {
                     echo json_encode("error_passwd");

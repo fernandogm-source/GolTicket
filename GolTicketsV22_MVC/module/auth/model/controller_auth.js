@@ -208,6 +208,7 @@ function login() {
         var data = $('#form-login').serialize();
         ajaxPromise('index.php?page=controller_auth&op=login', 'POST', 'JSON', data)
             .then(function(result) {
+                console.log(result);
                 if (result == "error_user") {
                     document.getElementById('msg-login').innerHTML = "El usario o correo no existe,asegurese de que lo ha escrito correctamente";
                     document.getElementById('msg-login').className = "auth-msg auth-msg--error";
@@ -215,6 +216,7 @@ function login() {
                     document.getElementById('msg-login').innerHTML = "La contraseña es incorrecta";
                     document.getElementById('msg-login').className = "auth-msg auth-msg--error";
                 } else {
+                    localStorage.setItem("token_JWT", result);
                     Swal.fire({
                         icon: 'success',
                         title: 'Loged successfully',
