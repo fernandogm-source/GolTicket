@@ -1,0 +1,108 @@
+<div class="auth-bg">
+    <div class="auth-bg-overlay"></div>
+    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6fzP-GKj2-IP6agmzoQSUcp-bONN2HZFm204cfz-ISLKbI_l4-AQqthHzVwHd969P5WKkPUN78g6pJW2q9_tHHcMn576gF1b8o_Nvb9a80fCO_X4XfFSaMbRF49OMXSKLdwZ4pb14kai3wh6nwrdBHg13C_P5X_aYgqlsOh6aL0e4AnM0fettSur7MINKCAjQuCbcNLeXFeJXwBNXepGTdZm5r226jEPi_t3F3polFfJx6_nCREidxPW7xHMid0mYv0OvBu8ADs0" alt="" class="auth-bg-img">
+</div>
+
+<main class="auth-card">
+
+    <header class="auth-header">
+        <a href="index.php" class="auth-logo">GolTicket</a>
+        <p class="auth-tagline">TU ACCESO AL JUEGO</p>
+    </header>
+
+    <div class="auth-tabs">
+        <button class="auth-tab auth-tab--active" id="tab-login">INICIAR SESIÓN</button>
+        <button class="auth-tab" id="tab-register">REGISTRARSE</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="auth-form-wrapper" id="login-container">
+        <div class="auth-form-heading">
+            <h2>Bienvenido de nuevo</h2>
+            <p>Ingresa tus credenciales</p>
+        </div>
+        <form class="auth-form" id="form-login" method="post" action="">
+            <div class="auth-field">
+                <label for="login-identity">USUARIO O CORREO</label>
+                <div class="auth-input-wrapper">
+                    <span class="material-symbols-outlined auth-input-icon">person</span>
+                    <input type="text" id="login-identity" name="login_identity" placeholder="ejemplo@correo.com">
+                </div>
+            </div>
+            <div class="auth-field">
+                <div class="auth-field-row">
+                    <label for="login-password">CONTRASEÑA</label>
+                    <a href="#">¿Olvidaste tu contraseña?</a>
+                </div>
+                <div class="auth-input-wrapper">
+                    <span class="material-symbols-outlined auth-input-icon">lock</span>
+                    <input type="password" id="login-password" name="login_password" placeholder="••••••••">
+                    <button type="button" class="auth-toggle-pass" id="toggle-login-pass">
+                        <span class="material-symbols-outlined">visibility</span>
+                    </button>
+                </div>
+            </div>
+            <div class="auth-check-row">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Mantener sesión iniciada</label>
+            </div>
+            <div class="auth-msg" id="msg-login"></div>
+            <button type="button" class="btn-auth btn-auth--login" id="btn-login">
+                Iniciar Sesión
+                <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+        </form>
+    </div>
+
+    <!-- REGISTRO -->
+    <div class="auth-form-wrapper auth-form-wrapper--hidden" id="register-container">
+        <div class="auth-form-heading">
+            <h2>Crear Cuenta</h2>
+            <p>Únete a los mejores precios</p>
+        </div>
+        <form class="auth-form" id="form-register" method="post" action="">
+            <div class="auth-field">
+                <label for="reg-email">CORREO ELECTRÓNICO</label>
+                <div class="auth-input-wrapper">
+                    <span class="material-symbols-outlined auth-input-icon">mail</span>
+                    <input type="email" id="reg-email" name="reg_email" placeholder="ejemplo@correo.com">
+                </div>
+            </div>
+            <div class="auth-field">
+                <label for="reg-username">NOMBRE DE USUARIO</label>
+                <div class="auth-input-wrapper">
+                    <span class="material-symbols-outlined auth-input-icon">person</span>
+                    <input type="text" id="reg-username" name="reg_username" placeholder="Nombre de usuario">
+                </div>
+            </div>
+            <div class="auth-field">
+                <label for="reg-password">CONTRASEÑA</label>
+                <div class="auth-input-wrapper">
+                    <span class="material-symbols-outlined auth-input-icon">lock</span>
+                    <input type="password" id="reg-password" name="reg_password" placeholder="••••••••">
+                    <button type="button" class="auth-toggle-pass" id="toggle-reg-pass">
+                        <span class="material-symbols-outlined">visibility</span>
+                    </button>
+                </div>
+            </div>
+            <div class="auth-check-row auth-check-row--top">
+                <input type="checkbox" id="terms" name="terms">
+                <label for="terms">
+                    Acepto los <a href="#">Términos</a> y la <a href="#">Política de Privacidad</a>.
+                </label>
+            </div>
+            <div class="auth-msg" id="msg-register"></div>
+            <button type="button" class="btn-auth btn-auth--register" id="btn-register">
+                Registrarse
+                <span class="material-symbols-outlined">stadium</span>
+            </button>
+        </form>
+    </div>
+
+    <footer class="auth-footer">
+        <a href="#">Ayuda</a>
+        <a href="#">Privacidad</a>
+        <a href="#">Términos</a>
+    </footer>
+
+</main>
