@@ -3,6 +3,8 @@ $path = $_SERVER['DOCUMENT_ROOT'] . '/GolTicketsV22_MVC/';
 include($path . "module/auth/model/DAOAuth.php");
 include($path . "/model/middleware_auth.php");
 
+@session_start();
+
 $op = $_GET['op'] ?? 'view';
 
 switch ($op) {
@@ -96,4 +98,20 @@ switch ($op) {
             exit;
         }
         break;
+
+        case 'logout':
+            unset($_SESSION['username']);
+            unset($_SESSION['tiempo']);
+            session_destroy();
+
+            echo json_encode("Done");
+            break;
+
+        case 'data_user':
+            $json = decode_token($_POST['token']);
+            $daoLog = new DAOAuth();
+            $rdo = $daoLog->select_data_user($json['username']);
+            echo json_encode($rdo);
+            exit;
+            break;
 }

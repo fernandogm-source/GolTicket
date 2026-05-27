@@ -293,12 +293,12 @@ class DAOShop {
     }
 
     function update_visits_event($id) {
-    $sql = "UPDATE partido SET visitas = visitas + 1 WHERE id_partido = :id";
+        $sql = "UPDATE partido SET visitas = visitas + 1 WHERE id_partido = :id";
 
-    $conexion = connect::con();
-    $stmt = $conexion->prepare($sql);
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    $stmt->execute();
-    connect::close($conexion);
+        $conexion = connect::con();
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        connect::close($conexion);
     }
 }

@@ -78,21 +78,21 @@ switch ($_GET['op']) {
         break;
 
     case 'count_events_related':
-    $local     = $_POST['local'];
-    $visitante = $_POST['visitante'];
-    try {
-        $dao = new DAOShop();
-        $rdo = $dao->count_more_events_related($local, $visitante);
-    } catch (Exception $e) {
-        echo json_encode("error");
-        exit;
-    }
-    if (empty($rdo)) {
-        echo json_encode("error");
-        exit;
-    }
-    echo json_encode($rdo);
-    break;
+        $local     = $_POST['local'];
+        $visitante = $_POST['visitante'];
+        try {
+            $dao = new DAOShop();
+            $rdo = $dao->count_more_events_related($local, $visitante);
+        } catch (Exception $e) {
+            echo json_encode("error");
+            exit;
+        }
+        if (empty($rdo)) {
+            echo json_encode("error");
+            exit;
+        }
+        echo json_encode($rdo);
+        break;
 
     case 'events_related':
         $idPart    = $_POST['idPart'];
@@ -120,12 +120,12 @@ switch ($_GET['op']) {
         break;
 
         case 'update_most_visited':
-    try {
-        $daoshop = new DAOShop();
-        $daoshop->update_visits_event($_GET['id']);
-        echo json_encode("ok");
-    } catch (Exception $e) {
-        echo json_encode("error");
-    }
-    break;
+        try {
+            $daoshop = new DAOShop();
+            $daoshop->update_visits_event($_GET['id']);
+            echo json_encode("ok");
+        } catch (Exception $e) {
+            echo json_encode("error");
+        }
+        break;
 }

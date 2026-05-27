@@ -10,7 +10,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <link href="view/css/style.css" rel="stylesheet" type="text/css"/>
-    <script src="view/js/promises.js"></script>
     <script src="module/shop/model/controller_shop.js"></script>
     <script src="module/search/model/controller_search.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
@@ -23,5 +22,6 @@
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootpag/lib/jquery.bootpag.min.js"></script>
+    <script src="view/js/main.js"></script>
 </head>
 <body>

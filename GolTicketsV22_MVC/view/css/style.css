@@ -2057,3 +2057,56 @@ body.auth-page {
 .auth-msg--error {
     margin-top: -8px; /* compensa el gap: 20px del form */
 }
+
+/* =====================================================
+   HEADER — USER MENU
+   ===================================================== */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.log-icon img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary);
+}
+
+#des_inf_user {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#user_info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+#logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    color: var(--text-muted);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+#logout:hover {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+}

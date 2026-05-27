@@ -8,8 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="view/css/style.css" rel="stylesheet" type="text/css"/>
-    <script src="view/js/promises.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="module/auth/model/controller_auth.js"></script>
+    <script src="view/js/main.js"></script>
 </head>
 <body class="auth-page">

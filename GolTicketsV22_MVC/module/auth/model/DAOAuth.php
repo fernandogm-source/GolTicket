@@ -64,4 +64,22 @@ function select_user($username) {
         return "error_user";
     }
 }
+
+function select_data_user($username) {
+    $sql = "SELECT * FROM users WHERE username = :username OR mail = :username";
+    $conexion = connect::con();
+
+    $stmt = $conexion->prepare($sql);
+    $stmt->bindValue(':username', $username);
+    $stmt->execute();
+
+    $res = $stmt->fetch(PDO::FETCH_ASSOC);
+    connect::close($conexion);
+
+    if ($res) {
+        return $res;
+    } else {
+        return "error_user";
+    }
+}
 }
