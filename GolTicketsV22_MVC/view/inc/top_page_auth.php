@@ -11,5 +11,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="module/auth/model/controller_auth.js"></script>
     <script src="view/js/main.js"></script>
+    <script src="view/js/activity_user.js"></script>
 </head>
 <body class="auth-page">

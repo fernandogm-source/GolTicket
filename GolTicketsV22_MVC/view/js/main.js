@@ -20,15 +20,13 @@ function load_menu() {
         ajaxPromise('module/auth/controller/controller_auth.php?op=data_user', 'POST', 'JSON', { 'token': token })
             .then(function(data) {
                 $('#signin').hide();
-                $('#user-menu').show();          // ← mostrar el bloque
+                $('#user-menu').show();
                 $('.log-icon').empty();
-                $('#user_info').empty();
                 $('<img>').attr({ src: data.avatar, alt: 'Avatar' }).appendTo('.log-icon');
-                $('<p></p>').attr({ 'id': 'user_info' }).appendTo('#des_inf_user')
-                    .html(
-                        '<span class="user-name">' + data.username + '</span>' +
-                        '<a id="logout"><span class="material-symbols-outlined">logout</span></a>'
-                    );
+                $('#user_info').html(
+                    '<span class="user-name">' + data.username + '</span>' +
+                    '<a id="logout"><span class="material-symbols-outlined">logout</span></a>'
+                );
             }).catch(function() {
                 console.log("Error al cargar los datos del user");
             });
