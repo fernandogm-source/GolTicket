@@ -4,6 +4,7 @@ $path = $_SERVER['DOCUMENT_ROOT'] . '/GolTicketsV22_MVC/';
 include($path . "module/home/model/DAOHome.php");
 
 @session_start();
+$_SESSION['tiempo'] = time();
 
 $op = $_GET['op'] ?? 'view';
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 13-05-2026 a las 14:42:36
+-- Tiempo de generación: 01-06-2026 a las 15:44:18
 -- Versión del servidor: 8.4.7
 -- Versión de PHP: 8.3.28
 
@@ -252,6 +252,20 @@ INSERT INTO `img_partido` (`id_img_partido`, `id_partido`, `img`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `likes_usuario`
+--
+
+DROP TABLE IF EXISTS `likes_usuario`;
+CREATE TABLE IF NOT EXISTS `likes_usuario` (
+  `id_like` int NOT NULL AUTO_INCREMENT,
+  `id_partido` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_usuario` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id_like`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `partido`
 --
 
@@ -281,18 +295,18 @@ CREATE TABLE IF NOT EXISTS `partido` (
 --
 
 INSERT INTO `partido` (`id_partido`, `nombre_partido`, `fecha_partido`, `id_equipolocal`, `id_equipovisitante`, `id_campo`, `id_competicion`, `precio`, `id_ciudad`, `lat`, `lng`, `visitas`) VALUES
-(1, 'Real Madrid vs Barcelona', '10-05-2026', 1, 2, 1, 1, 120, 1, '40.4530', '-3.6884', '1'),
-(2, 'Manchester City vs Real Madrid', '18-04-2026', 4, 1, 4, 2, 100, 4, '53.4832', '-2.2004', '0'),
+(1, 'Real Madrid vs Barcelona', '10-05-2026', 1, 2, 1, 1, 120, 1, '40.4530', '-3.6884', '5'),
+(2, 'Manchester City vs Real Madrid', '18-04-2026', 4, 1, 4, 2, 100, 4, '53.4832', '-2.2004', '1'),
 (3, 'Almeria vs Castellon', '22-07-2026', 5, 3, 3, 3, 15, 3, '36.8400', '-2.4354', '1'),
-(4, 'Barcelona vs Castellon', '15-05-2026', 2, 3, 2, 4, 25, 2, '41.3809', '2.1228', '1'),
+(4, 'Barcelona vs Castellon', '15-05-2026', 2, 3, 2, 4, 25, 2, '41.3809', '2.1228', '2'),
 (5, 'Real Madrid vs Manchester City', '20-05-2026', 1, 4, 1, 2, 130, 1, '40.4530', '-3.6884', '1'),
-(6, 'Barcelona vs Real Madrid', '28-05-2026', 2, 1, 2, 1, 95, 2, '41.3809', '2.1228', '40'),
+(6, 'Barcelona vs Real Madrid', '28-05-2026', 2, 1, 2, 1, 95, 2, '41.3809', '2.1228', '41'),
 (7, 'Castellon vs Almeria', '05-06-2026', 3, 5, 5, 3, 18, 5, '39.9864', '-0.0513', '20'),
-(8, 'Almeria vs Barcelona', '12-06-2026', 5, 2, 3, 4, 30, 3, '36.8400', '-2.4354', '10'),
+(8, 'Almeria vs Barcelona', '12-06-2026', 5, 2, 3, 4, 30, 3, '36.8400', '-2.4354', '12'),
 (9, 'Manchester City vs Barcelona', '19-06-2026', 4, 2, 4, 2, 110, 4, '53.4832', '-2.2004', '1'),
 (10, 'Real Madrid vs Almeria', '25-06-2026', 1, 5, 1, 1, 85, 1, '40.4530', '-3.6884', '1'),
-(11, 'Barcelona vs Manchester City', '02-07-2026', 2, 4, 2, 2, 120, 2, '41.3809', '2.1228', '0'),
-(12, 'Castellon vs Real Madrid', '08-07-2026', 3, 1, 5, 3, 20, 5, '39.9864', '-0.0513', '0'),
+(11, 'Barcelona vs Manchester City', '02-07-2026', 2, 4, 2, 2, 120, 2, '41.3809', '2.1228', '1'),
+(12, 'Castellon vs Real Madrid', '08-07-2026', 3, 1, 5, 3, 20, 5, '39.9864', '-0.0513', '1'),
 (13, 'Almeria vs Manchester City', '15-07-2026', 5, 4, 3, 2, 40, 3, '36.8400', '-2.4354', '0'),
 (14, 'Real Madrid vs Castellon', '22-07-2026', 1, 3, 1, 4, 75, 1, '40.4530', '-3.6884', '0'),
 (15, 'Barcelona vs Almeria', '29-07-2026', 2, 5, 2, 1, 60, 2, '41.3809', '2.1228', '0'),
@@ -399,6 +413,37 @@ INSERT INTO `partido_extra` (`id_partido_extra`, `id_partido`, `id_extra`) VALUE
 (70, 24, 2),
 (71, 24, 5),
 (72, 24, 6);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id_usuario` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mail` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` enum('client','admin') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'client',
+  `avatar` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id_usuario`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `users`
+--
+
+INSERT INTO `users` (`id_usuario`, `username`, `password`, `mail`, `role`, `avatar`) VALUES
+(1, 'ipjognkwjeqoiepdkm', '$argon2id$v=19$m=65536,t=4,p=2$VFVnUG1KaERyRTJ0Vk40WA$cuykwWD40RM0+OLlf+aSezwf86XHxzEogStQA6T/QBU', 'hola@gmail.com', 'client', 'https://robohash.org/9ac39ecec1ea38ff56c386f8d3591c9f73267bb808a3f5e8fd5819389d3d7e4c'),
+(2, 'iohuibkjnoi2', '$argon2id$v=19$m=65536,t=4,p=2$cEc1dHRBTDZqdFJVZVduTw$1GkJmO5aNAKMxP9IwmGAsP4qnIAU9j/BPOCdAl428ao', 'oukh@gmail.com', 'client', 'https://robohash.org/5849b1f2a7150160227966b5706b392a4e4cbcc8c80b8ca86c40a6ae79cb5bfa'),
+(3, 'pijofamkdw', '$argon2id$v=19$m=65536,t=4,p=2$REdtQm80T3FqcmF1dWNGVw$0RdsNQpe/vdnZNMwIV5pMKEbYXIOAUWxWymkhHBOGrE', 'retgdbjn@gmail.com', 'client', 'https://robohash.org/931c8d350027e4ad5be71d8f86dcbe004a67bdb7dcb4da75842845ec49a6b546'),
+(4, 'iojbksnalkw', '$argon2id$v=19$m=65536,t=4,p=2$VDJmd1lLWkFQUEhoSktybQ$DP/UVqzwqZ3Uqb0bIP8PrbSqwEhvBOFjFbyPj/8iJiU', 'etdgfnvb@gmail.com', 'client', 'https://robohash.org/226e0102d08d97469bba50f026a0670095d0bee154703e5ed274bd9e6119595f'),
+(5, 'iohuhbkzjld', '$argon2id$v=19$m=65536,t=4,p=2$T2tpWWpnSzBDQXlxTVNTeQ$8QCwfTevVRLJzNFj758lID5AJOx81QfkZk27yHB7d8o', 'jiohugjbkj@gmail.com', 'client', 'https://robohash.org/96ee5658666692ac59fc779957365b00b64393ef8c77616075aee6ae2e113735'),
+(6, 'asdqewrftgbv', '$argon2id$v=19$m=65536,t=4,p=2$dTVicFd6VVR4YVpaTjV2cA$O1sp4A9/qHLgIS06Mr7C3tj2vmUDHnfc22kfjxftqyA', 'eqdfsvsefe@gmail.com', 'client', 'https://robohash.org/faab9fc02517a61be0562e2ea1efb3fde8808509f6080ec37ceaf96f8a71a7dd'),
+(7, 'iejouifhbj', '$argon2id$v=19$m=65536,t=4,p=2$Z0JHSDg0WWxyWEE0cVJsMQ$DIK75t58jGUhNsWsjJtTpx1UzZhdWcQXuBlsZU3U81w', 'hola3@gmail.com', 'client', 'https://robohash.org/4c167a23fd8c01b65339328076cf43c809f78f4d68ed26d9d8ab23b137dd77ec'),
+(8, 'qiejowfpqokedm', '$argon2id$v=19$m=65536,t=4,p=2$bS9xOURsNTg0anIuUmprZw$/IVdrUzUK5HMYljxDmTVqo5Doym6HZXczv0g2v8DCtg', 'hola4@gmail.com', 'client', 'https://robohash.org/b853ab3cc5187eff3c0019269d4bc90a2274829b029dbe2b54e231e08e5d9fe1');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

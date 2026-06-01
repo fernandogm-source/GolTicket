@@ -30,7 +30,13 @@ function control_activity() {
 }
 
 function logout_auto() {
-    localStorage.removeItem('token_JWT');
+        ajaxPromise('module/auth/controller/controller_auth.php?op=logout', 'POST', 'JSON')
+        .then(function(data) {
+            localStorage.removeItem('token_JWT');
+            window.location.href = "index.php?module=controller_home&op=view";
+        }).catch(function() {
+            console.log('Something has occured');
+        });
             Swal.fire({
                         icon: 'success',
                         title: 'Se ha cerrado la cuenta debido a la inactividad.',

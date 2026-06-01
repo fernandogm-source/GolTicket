@@ -11,6 +11,9 @@ if (isset($_GET['page'])) {
         case "controller_auth":
             include("module/auth/controller/controller_auth.php");
             break;
+        case "controller_profile":
+            include("module/profile/controller/controller_profile.php");
+            break;
         case "404":
             include("view/inc/error404.php");
             break;

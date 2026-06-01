@@ -301,4 +301,67 @@ class DAOShop {
         $stmt->execute();
         connect::close($conexion);
     }
+
+    // LIKES
+	function select_load_likes($username) {
+        $sql = "SELECT l.id_partido 
+                FROM likes_usuario l 
+                WHERE l.id_usuario = (
+                    SELECT u.id_usuario FROM users u WHERE u.username = :username
+                )";
+        $conexion = connect::con();
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->execute();
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        connect::close($conexion);
+        return $res;
+    }
+
+    function select_likes($id_partido, $username) {
+        $sql = "SELECT l.id_partido 
+                FROM likes_usuario l
+                WHERE l.id_usuario = (
+                    SELECT u.id_usuario FROM users u WHERE u.username = :username
+                )
+                AND l.id_partido = :id_partido";
+        $conexion = connect::con();
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->bindParam(':id_partido', $id_partido, PDO::PARAM_INT);
+        $stmt->execute();
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        connect::close($conexion);
+        return $res;
+    }
+
+    function like($id_partido, $username) {
+        $sql = "INSERT INTO likes_usuario (id_usuario, id_partido) 
+                VALUES (
+                    (SELECT u.id_usuario FROM users u WHERE u.username = :username),
+                    :id_partido
+                )";
+        $conexion = connect::con();
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->bindParam(':id_partido', $id_partido, PDO::PARAM_INT);
+        $res = $stmt->execute();
+        connect::close($conexion);
+        return $res;
+    }
+
+    function dislike($id_partido, $username) {
+        $sql = "DELETE FROM likes_usuario 
+                WHERE id_partido = :id_partido 
+                AND id_usuario = (
+                    SELECT u.id_usuario FROM users u WHERE u.username = :username
+                )";
+        $conexion = connect::con();
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->bindParam(':id_partido', $id_partido, PDO::PARAM_INT);
+        $res = $stmt->execute();
+        connect::close($conexion);
+        return $res;
+    }
 }

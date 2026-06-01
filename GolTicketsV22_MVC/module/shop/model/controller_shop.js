@@ -1,6 +1,5 @@
 const MESES = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
 
-
 let leafletMap = null;
 let leafletMapDetail = null;
 
@@ -752,5 +751,62 @@ function more_events_related(idPart, local, visitante) {
 
 function updateMostVisited(id){
      ajaxPromise('module/shop/controller/controller_shop.php?op=update_most_visited&id=' + id, 'GET', 'JSON')
+}
+
+function click_like(id_partido, lugar) {
+    var token = localStorage.getItem('token_JWT');
+    if (token) {
+        ajaxPromise("module/shop/controller/controller_shop.php?op=control_likes", 'POST', 'JSON', { 'id_partido': id_partido, 'token': token })
+            .then(function(data) {
+                $("#" + id_partido + ".fa-heart").toggleClass('like_red');
+            }).catch(function() {
+                console.log("Error en el like");
+            });
+
+    } else {
+        const redirect = [];
+        redirect.push(id_partido, lugar);
+
+        localStorage.setItem('redirect_like', redirect);
+        localStorage.setItem('id_partido', id_partido);
+
+        Swal.fire({
+                        icon: 'success',
+                        title: 'Debes iniciar sesion',
+                        showConfirmButton: false,
+                        timer: 2000
+                        });
+        setTimeout("location.href = 'index.php?module=controller_auth&op=view';", 2000);
+    }
+}
+
+function load_likes_user() {
+    var token = localStorage.getItem('token');
+    if (token) {
+        ajaxPromise("module/shop/controller/controller_shop.php?op=load_likes_user", 'POST', 'JSON', { 'token': token })
+            .then(function(data) {
+                for (row in data) {
+                    $("#" + data[row].id_partido + ".fa-heart").toggleClass('like_red');
+                }
+            }).catch(function() {
+                console.log("Error en el like");
+            });
+    }
+}
+
+function redirect_login_like() {
+    //var token = localStorage.getItem('token');
+    //var id_car = localStorage.getItem('id_car');
+    //fer el like a l'user
+    //loadDetails(id_car);
+    var redirect = localStorage.getItem('redirect_like').split(",");
+    if (redirect[1] == "details") {
+        loadDetails(redirect[0]);
+        localStorage.removeItem('redirect_like');
+        localStorage.removeItem('page');
+    } else if (redirect[1] == "list_all") {
+        localStorage.removeItem('redirect_like');
+        loadCars();
+    }
 }
 

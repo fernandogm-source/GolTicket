@@ -3,6 +3,9 @@
 $path = $_SERVER['DOCUMENT_ROOT'] . '/GolTicketsV22_MVC/';
 include($path . "/module/shop/model/DAO_shop.php");
 
+@session_start();
+$_SESSION['tiempo'] = time();
+
 switch ($_GET['op']) {
     case 'view':
         include('module/shop/view/shop.html');
@@ -95,6 +98,7 @@ switch ($_GET['op']) {
         break;
 
     case 'events_related':
+
         $idPart    = $_POST['idPart'];
         $local     = $_POST['local'];
         $visitante = $_POST['visitante'];
@@ -119,13 +123,66 @@ switch ($_GET['op']) {
         }
         break;
 
-        case 'update_most_visited':
+    case 'update_most_visited':
         try {
             $daoshop = new DAOShop();
             $daoshop->update_visits_event($_GET['id']);
             echo json_encode("ok");
         } catch (Exception $e) {
             echo json_encode("error");
+        }
+        break;
+
+    case 'control_likes':
+        $token = $_POST['token'];
+        $id_partido = $_POST['id_partido'];
+
+        try {
+            $json = decode_token($token);
+            $dao = new DAOShop();
+            $rdo = $dao->select_likes($id_partido, $json['username']);
+        } catch (Exception $e) {
+            echo json_encode("error");
+            exit;
+        }
+        if (!$rdo) {
+            echo json_encode("error");
+            exit;
+        } else {
+            $dinfo = array();
+            foreach ($rdo as $row) {
+                array_push($dinfo, $row);
+            }
+            if (count($dinfo) === 0) {
+                $dao = new DAOShop();
+                $rdo = $dao->like($id_partido, $json['username']);
+                echo json_encode("0");
+            } else {
+                $dao = new DAOShop();
+                $rdo = $dao->dislike($id_partido, $json['username']);
+                echo json_encode("1");
+            }
+        }
+        break;
+
+    case 'load_likes_user';
+        try {
+            $json = decode_token($_POST['token']);
+            $dao = new DAOShop();
+            $rdo = $dao->select_load_likes($json['username']);
+        } catch (Exception $e) {
+            echo json_encode("error");
+            exit;
+        }
+        if (!$rdo) {
+            echo json_encode("error");
+            exit;
+        } else {
+            $dinfo = array();
+            foreach ($rdo as $row) {
+                array_push($dinfo, $row);
+            }
+            echo json_encode($dinfo);
         }
         break;
 }

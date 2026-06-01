@@ -51,6 +51,12 @@ function click_logout() {
     });
 }
 
+function click_profile() {
+    $(document).on('click', '.log-icon', function() {
+        window.location.href = "index.php?page=controller_profile&op=auth";
+    });
+}
+
 //================LOG-OUT================
 function logout() {
     ajaxPromise('module/auth/controller/controller_auth.php?op=logout', 'POST', 'JSON')
@@ -65,4 +71,5 @@ function logout() {
 $(document).ready(function() {
     load_menu();
     click_logout();
+    click_profile();
 });

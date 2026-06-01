@@ -7,6 +7,8 @@
         include("view/inc/top_page_shop.php");
     }elseif($page === "controller_auth") {
         include("view/inc/top_page_auth.php");
+    }elseif($page === "controller_profile") {
+        include("view/inc/top_page_profile.php");
     }else {
         include("view/inc/top_page.php");
     }

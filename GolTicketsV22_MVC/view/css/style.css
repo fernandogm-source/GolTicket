@@ -2095,18 +2095,442 @@ body.auth-page {
     color: var(--text);
 }
 
-#logout {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 8px;
-    color: var(--text-muted);
-    transition: background-color 0.2s, color 0.2s;
+/* =====================================================
+   PERFIL / LIKED EVENTS — bloque para pegar al final de style.css
+   (variables y reset ya definidos arriba; solo clases nuevas)
+   ===================================================== */
+
+/* ---------- Layout wrapper con sidebar ---------- */
+.wrapper {
+  max-width: 1440px;
+  margin-left: 0;
+  margin-right: auto;
+  display: flex;
+  gap: 2rem;
 }
 
-#logout:hover {
-    background-color: rgba(239, 68, 68, 0.15);
-    color: #f87171;
+/* =====================================================
+   SIDEBAR
+   ===================================================== */
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  min-height: 100vh;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  gap: 0.5rem;
 }
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.sidebar-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  overflow: hidden;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.sidebar-avatar img,
+.profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.sidebar-username { font-size: 0.875rem; font-weight: 700; color: var(--white); }
+
+/* Nav */
+.sidebar-nav { flex: 1; display: flex; flex-direction: column; gap: 0.25rem; }
+
+.nav-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 150ms, background-color 150ms;
+  border: none;
+  background: none;
+  font-family: 'Lexend', sans-serif;
+  cursor: pointer;
+}
+
+.nav-btn:hover {
+  color: var(--white);
+  background-color: var(--surface);
+}
+
+.nav-btn:hover .material-symbols-outlined { color: var(--primary); }
+
+.nav-btn.active {
+  color: var(--white);
+  font-weight: 700;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.nav-btn.active .material-symbols-outlined { color: var(--primary); }
+
+/* Sidebar footer */
+.sidebar-footer {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nav-btn-help { color: var(--text-muted); font-weight: 500; }
+.nav-btn-help:hover { color: var(--white); }
+
+.nav-btn-logout { color: #f87171; font-weight: 500; }
+.nav-btn-logout:hover { background-color: rgba(239,68,68,0.1); }
+
+/* =====================================================
+   MAIN DEL PERFIL
+   ===================================================== */
+.profile-main {
+  flex: 1;
+  padding: 2.5rem;
+  background-color: var(--bg);
+  overflow-y: auto;
+}
+
+/* =====================================================
+   VIEWS (secciones del perfil)
+   ===================================================== */
+.view { display: block; }
+.view.hidden { display: none; }
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(1rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.view { animation: fadeSlideIn 0.5s ease both; }
+
+/* =====================================================
+   PAGE HEADER (dentro de vistas)
+   ===================================================== */
+.page-header { margin-bottom: 2.5rem; }
+.page-header h1 { font-size: 1.875rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+.page-header p  { font-size: 0.875rem; color: var(--text-muted); }
+
+/* =====================================================
+   INFORMACIÓN PERSONAL
+   ===================================================== */
+.view-personal { max-width: 56rem; }
+
+.personal-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .personal-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* Card */
+.card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+.card-space { display: flex; flex-direction: column; gap: 1.5rem; }
+
+/* Form fields */
+.field { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.field label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.field input {
+  width: 100%;
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--white);
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-family: 'Lexend', sans-serif;
+  transition: border-color 150ms, box-shadow 150ms;
+  outline: none;
+}
+
+.field input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+/* Botón guardar */
+.btn-save {
+  width: 100%;
+  background-color: var(--primary);
+  color: var(--white);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  font-family: 'Lexend', sans-serif;
+  border: none;
+  cursor: pointer;
+  transition: background-color 150ms, transform 100ms;
+  box-shadow: 0 4px 14px rgba(59,130,246,0.2);
+}
+
+.btn-save:hover  { background-color: var(--primary-hover); }
+.btn-save:active { transform: scale(0.95); }
+
+/* Tarjeta de identidad del perfil */
+.profile-identity-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.profile-identity-header h4 { font-size: 1.125rem; font-weight: 700; color: var(--white); }
+
+.profile-identity-body { display: flex; align-items: center; gap: 1.5rem; }
+
+.profile-avatar {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 9999px;
+  border: 2px solid rgba(59,130,246,0.3);
+  overflow: hidden;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
+  flex-shrink: 0;
+}
+
+.profile-avatar-text { font-size: 0.875rem; color: var(--text-muted); line-height: 1.4; }
+
+/* Tarjeta verificado */
+.verified-card {
+  background-color: rgba(59,130,246,0.05);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.verified-icon {
+  background-color: rgba(59,130,246,0.2);
+  color: var(--primary);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  flex-shrink: 0;
+}
+
+.verified-icon .material-symbols-outlined { font-size: 1.25rem; }
+
+.verified-card h5 { font-size: 0.875rem; font-weight: 700; color: var(--white); }
+.verified-card p  { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.6; }
+
+/* =====================================================
+   LIKED EVENTS
+   ===================================================== */
+.view-liked { max-width: 72rem; }
+
+.liked-header {
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background-color: var(--surface);
+  padding: 0.375rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+}
+
+.filter-tab {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  transition: color 150ms;
+  border: none;
+  background: none;
+  font-family: 'Lexend', sans-serif;
+  cursor: pointer;
+}
+
+.filter-tab:hover { color: var(--white); }
+.filter-tab.active { background-color: var(--primary); color: var(--white); }
+
+/* Grid de partidos */
+.matches-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px)  { .matches-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1280px) { .matches-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+/* Match card */
+.match-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 300ms, border-color 300ms;
+}
+
+.match-card:hover {
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.4);
+  border-color: rgba(59,130,246,0.3);
+}
+
+/* Imagen de la card */
+.match-card-img {
+  position: relative;
+  height: 11rem;
+  overflow: hidden;
+}
+
+.match-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 700ms;
+}
+
+.match-card:hover .match-card-img img { transform: scale(1.1); }
+
+.fav-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  background-color: rgba(15,23,42,0.6);
+  backdrop-filter: blur(12px);
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+
+.fav-btn .material-symbols-outlined {
+  color: var(--primary);
+  font-size: 1.25rem;
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.selling-badge {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background-color: var(--primary);
+  color: var(--white);
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Cuerpo de la card */
+.match-card-body {
+  padding: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.match-card-info { margin-bottom: 1rem; }
+
+.match-card-info h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.25rem;
+  transition: color 300ms;
+}
+
+.match-card:hover .match-card-info h3 { color: var(--primary); }
+
+.match-location {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.match-location .material-symbols-outlined { font-size: 0.875rem; }
+
+/* Footer de la card */
+.match-card-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(51,65,85,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.price-label {
+  font-size: 0.625rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.price-value {
+  font-size: 1.125rem;
+  font-weight: 900;
+  color: var(--primary);
+}
+
+.btn-tickets {
+  background-color: var(--primary);
+  color: var(--white);
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  font-family: 'Lexend', sans-serif;
+  border: none;
+  cursor: pointer;
+  transition: background-color 150ms, transform 100ms;
+}
+
+.btn-tickets:hover  { background-color: var(--primary-hover); }
+.btn-tickets:active { transform: scale(0.95); }
+
+/* Utilidades */
+.profile-sidebar    { display: flex; flex-direction: column; gap: 1.5rem; }
+.liked-page-header  { margin-bottom: 0; }

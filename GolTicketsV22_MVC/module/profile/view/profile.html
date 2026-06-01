@@ -1,0 +1,109 @@
+<div class="wrapper">
+
+    <!-- ========== SIDEBAR ========== -->
+    <aside class="sidebar">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDQ5JXHhY8D7zNmBe_OShSpjgtG_vfevdKqItTsySJWAWvCu16nm-sJQaez_3alvc8l9MTdxzYx5pGjUf6KBRemkb4-S_DmOJUI_U2wfznNfdMQKDJaej69ZmwND9YnfGKghpGu8ytVbUwCbmr11mloLMYVeISA0JPRhdofeY5MP4xV4EP7DC8JdCOez68Yk5h5gmNjDzgiGkhdIOm9xhp534f8xuDM1gs-oYvQMHvqOusUsZm7sAyq6y1qiYxwQpTKYI840FeTgM"
+            alt="User profile"
+          >
+        </div>
+        <span class="sidebar-username">Alex Morgan</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" id="btn-personal" onclick="switchTab('personal')">
+          <span class="material-symbols-outlined">person</span>
+          <span>Personal Info</span>
+        </button>
+        <button class="nav-btn" id="btn-liked" onclick="switchTab('liked')">
+          <span class="material-symbols-outlined">favorite</span>
+          <span>Liked Events</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="nav-btn nav-btn-help">
+          <span class="material-symbols-outlined">help</span>
+          <span>Help Center</span>
+        </button>
+        <button id="logout" class="nav-btn nav-btn-logout">
+          <span class="material-symbols-outlined">logout</span>
+          <span>Sign Out</span>
+        </button>
+      </div>
+
+    </aside>
+
+    <!-- ========== MAIN ========== -->
+    <main class="profile-main">
+
+      <!-- Vista: Personal Info -->
+      <section class="view view-personal" id="view-personal">
+        <div class="page-header">
+          <h1>Account Settings</h1>
+          <p>Manage your personal details and how we reach you.</p>
+        </div>
+
+        <div class="personal-grid">
+
+          <!-- Formulario -->
+           <form id="form-profile">
+          <div class="card card-space">
+            <div class="field">
+              <label>Username</label>
+              <input type="text" id="profile-username" value="morgan_pro99">
+            </div>
+            <div class="field">
+              <label>Password</label>
+              <input type="password" id="profile-password" placeholder="********">
+            </div>
+            <button class="btn-save">Save Changes</button>
+          </div>
+          </form>
+
+          <!-- Sidebar de perfil -->
+          <div class="profile-sidebar">
+
+            <div class="card">
+              <div class="profile-identity-header">
+                <h4>Profile Identity</h4>
+              </div>
+              <div class="profile-identity-body">
+                <div class="profile-avatar">
+                  <img
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsSlJIA9f2JWq_yDd2q3dxfTA9r6RxDBYFpUWjQJo98epQqqpmVllDTMIXHxO8qN3Cbg4Cr35-v8MjGuDR-NW0pEk9HHkuTEnWmzhUUwCTS57TepX2Q_g1lrw6AnBwdm9o40ZAHuA73YDXuSUSD_296ei9QnqZ_23fzOoG1TLByIQLk7a8qUDBXdVXXxDd7iTJSz_pkOXwXaf-mYRYegw0H3etwHYi05HTKC4OJ5C6bMPSK6Ys841V4ZUBrrm5IE4ZGPM2ddvYVJM"
+                    alt="User profile photo"
+                  >
+                </div>
+                <p class="profile-avatar-text">This is your avatar.</p>
+              </div>
+            </div>
+
+            <div class="verified-card">
+              <div class="verified-icon">
+                <span class="material-symbols-outlined">verified</span>
+              </div>
+              <div>
+                <h5>Verified Fan Status</h5>
+                <p>Your account is verified. You have early access to high-demand match tickets and exclusive pre-sales.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Vista: Liked Events -->
+      <section class="view view-liked hidden" id="view-liked">
+        <div class="liked-header">
+          <div class="page-header liked-page-header">
+            <h1>Liked Events</h1>
+            <p>Your watchlist of upcoming high-stakes matches.</p>
+          </div>
+        </div>
+        <div class="matches-grid">
+        </div>
+      </section>
+    </main>
+  </div>

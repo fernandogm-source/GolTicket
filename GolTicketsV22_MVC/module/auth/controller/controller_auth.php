@@ -157,4 +157,8 @@ switch ($op) {
             echo json_encode("Done");
             exit;
             break;
+        case 'profile':
+            include("module/auth/view/profile.html");
+            break;
+            
         }
