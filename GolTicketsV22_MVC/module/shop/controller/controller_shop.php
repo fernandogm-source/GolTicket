@@ -2,6 +2,7 @@
 
 $path = $_SERVER['DOCUMENT_ROOT'] . '/GolTicketsV22_MVC/';
 include($path . "/module/shop/model/DAO_shop.php");
+include($path . "/model/middleware_auth.php");
 
 @session_start();
 $_SESSION['tiempo'] = time();
@@ -145,27 +146,25 @@ switch ($_GET['op']) {
             echo json_encode("error");
             exit;
         }
-        if (!$rdo) {
+
+        // ← antes era (!$rdo), que falla con array vacío
+        if (!is_array($rdo)) {
             echo json_encode("error");
             exit;
+        }
+
+        if (count($rdo) === 0) {
+            $dao = new DAOShop();
+            $rdo = $dao->like($id_partido, $json['username']);
+            echo json_encode("0");
         } else {
-            $dinfo = array();
-            foreach ($rdo as $row) {
-                array_push($dinfo, $row);
-            }
-            if (count($dinfo) === 0) {
-                $dao = new DAOShop();
-                $rdo = $dao->like($id_partido, $json['username']);
-                echo json_encode("0");
-            } else {
-                $dao = new DAOShop();
-                $rdo = $dao->dislike($id_partido, $json['username']);
-                echo json_encode("1");
-            }
+            $dao = new DAOShop();
+            $rdo = $dao->dislike($id_partido, $json['username']);
+            echo json_encode("1");
         }
         break;
 
-    case 'load_likes_user';
+    case 'load_likes_user':
         try {
             $json = decode_token($_POST['token']);
             $dao = new DAOShop();

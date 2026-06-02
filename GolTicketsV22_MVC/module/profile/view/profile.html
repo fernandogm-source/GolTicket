@@ -1,15 +1,11 @@
 <div class="wrapper">
 
     <!-- ========== SIDEBAR ========== -->
-    <aside class="sidebar">
-      <div class="sidebar-user">
-        <div class="sidebar-avatar">
-          <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDQ5JXHhY8D7zNmBe_OShSpjgtG_vfevdKqItTsySJWAWvCu16nm-sJQaez_3alvc8l9MTdxzYx5pGjUf6KBRemkb4-S_DmOJUI_U2wfznNfdMQKDJaej69ZmwND9YnfGKghpGu8ytVbUwCbmr11mloLMYVeISA0JPRhdofeY5MP4xV4EP7DC8JdCOez68Yk5h5gmNjDzgiGkhdIOm9xhp534f8xuDM1gs-oYvQMHvqOusUsZm7sAyq6y1qiYxwQpTKYI840FeTgM"
-            alt="User profile"
-          >
-        </div>
-        <span class="sidebar-username">Alex Morgan</span>
+    <aside class="sidebar profile-sidebar-layout">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar">
+            <img src="" alt="User profile"> </div>
+          <span class="sidebar-username">Cargando...</span> 
       </div>
 
       <nav class="sidebar-nav">
@@ -50,17 +46,37 @@
 
           <!-- Formulario -->
            <form id="form-profile">
-          <div class="card card-space">
-            <div class="field">
-              <label>Username</label>
-              <input type="text" id="profile-username" value="morgan_pro99">
-            </div>
-            <div class="field">
-              <label>Password</label>
-              <input type="password" id="profile-password" placeholder="********">
-            </div>
-            <button class="btn-save">Save Changes</button>
-          </div>
+              <div class="card-space">
+                  
+                  <div class="field field-inline-edit">
+                      <label for="reg-username">USERNAME</label>
+                      <div class="input-inline-container">
+                          <input type="text" id="reg-username" name="username" value="" readonly>
+                          <button type="button" class="btn-inline-edit" data-target="username" id="btn-edit-username">
+                              <span class="material-symbols-outlined">edit</span>
+                          </button>
+                      </div>
+                  </div>
+
+                  <div class="field field-inline-edit">
+                      <label for="reg-email">E-MAIL</label>
+                      <div class="input-inline-container">
+                          <input type="email" id="reg-email" name="email" value="" readonly>
+                          </div>
+                  </div>
+
+                  <div class="field field-inline-edit">
+                      <label for="reg-password">CONTRASEÑA</label>
+                      <div class="input-inline-container">
+                          <input type="password" id="reg-password" name="password" placeholder="••••••••" readonly>
+                          <button type="button" class="btn-inline-edit" data-target="password" id="btn-edit-password">
+                              <span class="material-symbols-outlined">edit</span>
+                          </button>
+                      </div>
+                  </div>
+
+                  <div class="auth-msg" id="msg-register"></div>
+              </div>
           </form>
 
           <!-- Sidebar de perfil -->
@@ -72,10 +88,7 @@
               </div>
               <div class="profile-identity-body">
                 <div class="profile-avatar">
-                  <img
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsSlJIA9f2JWq_yDd2q3dxfTA9r6RxDBYFpUWjQJo98epQqqpmVllDTMIXHxO8qN3Cbg4Cr35-v8MjGuDR-NW0pEk9HHkuTEnWmzhUUwCTS57TepX2Q_g1lrw6AnBwdm9o40ZAHuA73YDXuSUSD_296ei9QnqZ_23fzOoG1TLByIQLk7a8qUDBXdVXXxDd7iTJSz_pkOXwXaf-mYRYegw0H3etwHYi05HTKC4OJ5C6bMPSK6Ys841V4ZUBrrm5IE4ZGPM2ddvYVJM"
-                    alt="User profile photo"
-                  >
+                  <img src="" alt="User profile photo">
                 </div>
                 <p class="profile-avatar-text">This is your avatar.</p>
               </div>
@@ -102,8 +115,10 @@
             <p>Your watchlist of upcoming high-stakes matches.</p>
           </div>
         </div>
-        <div class="matches-grid">
-        </div>
+        
+        <div class="matches-grid"></div>
+        
+        <div id="liked-pagination" class="pagination-container"></div>
       </section>
     </main>
   </div>

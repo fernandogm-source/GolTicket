@@ -53,7 +53,7 @@ function click_logout() {
 
 function click_profile() {
     $(document).on('click', '.log-icon', function() {
-        window.location.href = "index.php?page=controller_profile&op=auth";
+        window.location.href = "index.php?page=controller_profile&op=view";
     });
 }
 

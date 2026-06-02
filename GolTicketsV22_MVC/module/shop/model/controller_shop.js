@@ -181,7 +181,12 @@ function ajaxForSearch(url, filtro, limit=6, offset=0,orderby="p.id_partido") {
                                     </span>
                                 </div>
                                 <span class="partido-badge">${p.nombre_competicion}</span>
-                                <button class="btn-tickets" id="${p.id_partido}">Ver entradas</button>
+                                <div class="partido-card-footer">
+                                    <button class="btn-tickets" id="${p.id_partido}">Ver entradas</button>
+                                    <button class="btn-like" data-id="${p.id_partido}" data-lugar="list_all" title="Me gusta">
+                                        <span class="material-symbols-outlined like-icon" id="like-${p.id_partido}">favorite</span>
+                                    </button>
+                                </div>
                             </div>
                         `);
  
@@ -197,6 +202,7 @@ function ajaxForSearch(url, filtro, limit=6, offset=0,orderby="p.id_partido") {
                     });
                 }
                 leafletMap_all(data);
+                load_likes_user();
                 
             }
         }).catch(function() {
@@ -486,6 +492,13 @@ function clicks() {
  
     // El slider usa el evento "stop" registrado dentro de print_filters()
     // para auto-aplicar al soltar el handle.
+
+    // ── Like ──────────────────────────────────────────────────────────────────
+    $(document).on('click', '.btn-like', function() {
+        var id_partido = $(this).data('id');
+        var lugar      = $(this).data('lugar');
+        click_like(id_partido, lugar);
+    });
 }
  
 function loadDetails(id) {
@@ -519,42 +532,26 @@ function loadDetails(id) {
             `;
         }
  
-        $('#details-shop').html(`
-            <div class="details-row">
-                <div class="date_img"></div>
-                <div class="date_event">
-                    <div class="partido-detail">
-                        <h2 class="partido-detail-titulo">${p.nombre_partido}</h2>
-                        <div class="partido-detail-meta">
-                            <div class="partido-detail-item">
-                                <span class="material-symbols-outlined">stadium</span>
-                                <span>${p.nombre_campo}</span>
-                            </div>
-                            <div class="partido-detail-item">
-                                <span class="material-symbols-outlined">location_on</span>
-                                <span>${p.nombre_ciudad}</span>
-                            </div>
-                            <div class="partido-detail-item">
-                                <span class="material-symbols-outlined">calendar_month</span>
-                                <span>${f[0]} ${mes} ${f[2]}</span>
-                            </div>
-                            <div class="partido-detail-item">
-                                <span class="material-symbols-outlined">emoji_events</span>
-                                <span>${p.nombre_competicion}</span>
-                            </div>
-                            <div class="partido-detail-item">
-                                <span class="material-symbols-outlined">sell</span>
-                                <span>${p.precio}€</span>
-                            </div>
-                        </div>
-                        <div class="partido-detail-actions">
-                            <button class="btn-tickets">Comprar entradas</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            ${extrasHTML}
-        `);
+  const isLiked = $(`#seccion-lista #like-${p.id_partido}`).hasClass('like-active') ? 'like-active' : '';
+
+  $('#details-shop').html(`
+      <div class="details-row">
+          <div class="date_img"></div>
+          <div class="date_event">
+              <div class="partido-detail">
+                  <h2 class="partido-detail-titulo">${p.nombre_partido}</h2>
+                  <div class="partido-detail-actions">
+                  <button class="btn-like btn-like-detail" data-id="${p.id_partido}" data-lugar="details" title="Me gusta">
+                      <span class="material-symbols-outlined like-icon ${isLiked}" id="like-detail-${p.id_partido}">favorite</span>
+                      <span class="like-label">Me gusta</span>
+                  </button>
+                  <button class="btn-tickets">Comprar entradas</button>
+              </div>
+              </div>
+          </div>
+      </div>
+      ${extrasHTML}
+  `);
  
         for (let row in data[1]) {
             $('<div></div>').attr({ 'class': 'date_img_dentro' }).appendTo('.date_img')
@@ -575,6 +572,7 @@ function loadDetails(id) {
         });
         console.log(p.id_partido, p.id_equipolocal, p.id_equipovisitante);
         more_events_related(p.id_partido, p.id_equipolocal, p.id_equipovisitante);
+        load_likes_user();
  
     }).catch(function() {
         // window.location.href = "index.php?module=ctrl_exceptions&op=503&type=503&lugar=Load_Details SHOP";
@@ -586,7 +584,11 @@ $(document).ready(function () {
     loadEvent();
     clicks();
     pagination();
+    
+    // Primero procesamos si hay que lanzar el "Like" automático tras loguearse
+    redirect_login_like();
 
+    // Luego miramos si la URL pide cargar la vista de un detalle específico
     const params = new URLSearchParams(window.location.search);
     const detalle = params.get('detalle');
     if (detalle) {
@@ -758,55 +760,75 @@ function click_like(id_partido, lugar) {
     if (token) {
         ajaxPromise("module/shop/controller/controller_shop.php?op=control_likes", 'POST', 'JSON', { 'id_partido': id_partido, 'token': token })
             .then(function(data) {
-                $("#" + id_partido + ".fa-heart").toggleClass('like_red');
+                // Seleccionamos tanto el icono de la lista como el del detalle instanciado
+                var $iconList = $("#like-" + id_partido);
+                var $iconDetail = $("#like-detail-" + id_partido);
+                
+                if (data == "0") {
+                    $iconList.addClass('like-active');
+                    $iconDetail.addClass('like-active');
+                } else {
+                    $iconList.removeClass('like-active');
+                    $iconDetail.removeClass('like-active');
+                }
             }).catch(function() {
                 console.log("Error en el like");
             });
 
     } else {
-        const redirect = [];
-        redirect.push(id_partido, lugar);
-
-        localStorage.setItem('redirect_like', redirect);
+        // Guardar para redirigir tras el login
+        localStorage.setItem('redirect_like', id_partido + ',' + lugar);
         localStorage.setItem('id_partido', id_partido);
 
         Swal.fire({
-                        icon: 'success',
-                        title: 'Debes iniciar sesion',
-                        showConfirmButton: false,
-                        timer: 2000
-                        });
-        setTimeout("location.href = 'index.php?module=controller_auth&op=view';", 2000);
+            icon: 'info',
+            title: 'Debes iniciar sesión',
+            text: 'Inicia sesión para guardar tus partidos favoritos.',
+            showConfirmButton: false,
+            timer: 2000
+        });
+        setTimeout(function() {
+            location.href = 'index.php?page=controller_auth&op=view';
+        }, 2000);
     }
 }
 
 function load_likes_user() {
-    var token = localStorage.getItem('token');
+    var token = localStorage.getItem('token_JWT');
     if (token) {
         ajaxPromise("module/shop/controller/controller_shop.php?op=load_likes_user", 'POST', 'JSON', { 'token': token })
             .then(function(data) {
-                for (row in data) {
-                    $("#" + data[row].id_partido + ".fa-heart").toggleClass('like_red');
+                if (data === 'error') return;
+                for (var row in data) {
+                    $("#like-" + data[row].id_partido).addClass('like-active');
                 }
             }).catch(function() {
-                console.log("Error en el like");
+                console.log("Error cargando likes del usuario");
             });
     }
 }
 
 function redirect_login_like() {
-    //var token = localStorage.getItem('token');
-    //var id_car = localStorage.getItem('id_car');
-    //fer el like a l'user
-    //loadDetails(id_car);
-    var redirect = localStorage.getItem('redirect_like').split(",");
-    if (redirect[1] == "details") {
-        loadDetails(redirect[0]);
-        localStorage.removeItem('redirect_like');
+    var token = localStorage.getItem('token_JWT');
+    var redirectRaw = localStorage.getItem('redirect_like');
+    
+    // SI NO HAY TOKEN (usuario anónimo) O NO HAY LIKE PENDIENTE, NOS SALIMOS DE LA FUNCIÓN
+    if (!token || !redirectRaw) return;
+
+    var redirect = redirectRaw.split(",");
+    var id_partido = redirect[0];
+    var lugar      = redirect[1];
+
+    // Borramos la variable para que no se repita el proceso
+    localStorage.removeItem('redirect_like');
+
+    if (lugar === "details") {
+        // Ejecuta el click del like automáticamente ya estando logueado en la vista detalle
+        click_like(id_partido, lugar);
         localStorage.removeItem('page');
-    } else if (redirect[1] == "list_all") {
-        localStorage.removeItem('redirect_like');
-        loadCars();
+    } else {
+        // Si venía de la lista general, ejecuta el like y recarga los eventos
+        click_like(id_partido, lugar);
+        loadEvent();
     }
 }
-

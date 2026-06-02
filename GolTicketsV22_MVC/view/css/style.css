@@ -1118,6 +1118,13 @@ img { display: block; max-width: 100%; }
 .partido-detail-item .material-symbols-outlined { font-size: 20px; color: var(--primary); }
  
 .partido-detail-actions .btn-tickets { width: 100%; }
+
+.partido-detail-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+}
  
 .btn-volver {
     display: flex;
@@ -2112,17 +2119,6 @@ body.auth-page {
 /* =====================================================
    SIDEBAR
    ===================================================== */
-.sidebar {
-  width: 280px;
-  flex-shrink: 0;
-  min-height: 100vh;
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  padding: 2rem 1.5rem;
-  gap: 0.5rem;
-}
-
 .sidebar-user {
   display: flex;
   align-items: center;
@@ -2534,3 +2530,237 @@ body.auth-page {
 /* Utilidades */
 .profile-sidebar    { display: flex; flex-direction: column; gap: 1.5rem; }
 .liked-page-header  { margin-bottom: 0; }
+
+/* ── Like button ──────────────────────────────────── */
+.btn-like {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.15s;
+    flex-shrink: 0;
+}
+
+.btn-like:hover {
+    border-color: #e63946;
+    color: #e63946;
+    background: rgba(230, 57, 70, 0.1);
+}
+
+.btn-like:active {
+    transform: scale(0.88);
+}
+
+.btn-like .like-icon {
+    font-size: 20px;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    transition: font-variation-settings 0.2s, color 0.2s;
+}
+
+.like-icon.like-active {
+    color: #e63946;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Variante del detalle (con texto "Me gusta") */
+.btn-like-detail {
+    width: auto;
+    padding: 0 16px;
+    border-radius: 8px;
+    gap: 6px;
+}
+
+.btn-like-detail .like-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.btn-like-detail.liked {
+    border-color: #e63946;
+    background: rgba(230, 57, 70, 0.12);
+    color: #e63946;
+}
+
+/* =====================================================
+   ESTILOS COMPONENTES EDITABLES INLINE (PERFIL)
+   ===================================================== */
+
+/* Contenedor que agrupa el input y el botón en una sola línea horizontal */
+.input-inline-container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    width: 100% !important;
+    position: relative !important;
+    background-color: #0b0f19 !important; /* Fondo por defecto más oscuro (modo lectura) */
+    border: 1px solid var(--border) !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
+    transition: border-color 0.2s;
+}
+
+/* Modificar los inputs para que se fundan de forma limpia en el contenedor */
+.input-inline-container input {
+    flex-grow: 1 !important;
+    border: none !important; /* Eliminamos el borde nativo del input */
+    background: transparent !important; /* Hereda el fondo oscuro */
+    padding: 0.75rem 1rem !important;
+    color: var(--text) !important;
+    font-size: 0.95rem !important;
+    width: 100% !important;
+    outline: none !important;
+}
+
+/* Estado cuando el input está activo escribiendo (Modo Edición) */
+.input-inline-container input.input-editing-mode {
+    background-color: #111827 !important; /* Da Feedback visual de que ya se puede escribir */
+}
+
+/* Botón flotante derecho de edición */
+.btn-inline-edit {
+    background: none !important;
+    border: none !important;
+    color: var(--text-muted) !important;
+    padding: 0 1rem !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: color 0.2s, background-color 0.2s;
+    border-left: 1px solid var(--border) !important;
+}
+
+.btn-inline-edit:hover {
+    color: var(--primary) !important;
+    background-color: rgba(59, 130, 246, 0.05) !important;
+}
+
+/* Variante de color verde cuando el botón se transforma en guardar (Checkmark) */
+.btn-inline-edit.btn-inline-save {
+    color: #10b981 !important;
+    background-color: rgba(16, 185, 129, 0.08) !important;
+}
+
+.sidebar.profile-sidebar-layout {
+  width: 280px;
+  flex-shrink: 0;
+  min-height: 100vh;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  gap: 0.5rem;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* =====================================================
+   REGLAS DE REPARACIÓN PARA EL GRID DE LIKED EVENTS
+   ===================================================== */
+
+/* Obliga a la sección a usar todo el espacio y define la cuadrícula */
+#view-liked .matches-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+    gap: 2rem !important;
+    width: 100% !important;
+    margin-top: 1.5rem;
+}
+
+/* Modificaciones estructurales para las tarjetas dentro del Perfil */
+.profile-match-card {
+    width: 100% !important; /* Desvincula el tamaño rígido heredado de la tienda */
+    background-color: var(--surface) !important;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Contenedor relativo de la imagen para la medalla de fecha */
+.profile-match-card .match-img-wrapper {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.profile-match-card .match-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Medalla de fecha flotante idéntica a tu e-commerce */
+.match-date-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background-color: rgba(15, 23, 42, 0.85); /* Fondo oscuro translúcido */
+    backdrop-filter: blur(4px);
+    padding: 6px 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid var(--border);
+    min-width: 48px;
+}
+
+.match-date-day {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+}
+
+.match-date-month {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+/* Estilos de espaciado del texto inferior */
+.profile-match-card .match-info {
+    padding: 1.25rem !important;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.profile-match-card .match-info h4 {
+    font-size: 1.1rem;
+    color: var(--text);
+    font-weight: 600;
+}
+
+/* Contenedor centralizado para los botones de páginas del perfil */
+.pagination-container {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    clear: both !important;       /* Rompe cualquier alineación o flotado heredado */
+    margin: 3rem 0 1.5rem 0 !important;
+}
+
+/* Forzar que los botones hereden los estilos circulares oscuros de tu tienda */
+.pagination-container .pagination {
+    display: flex !important;
+    gap: 0.5rem !important;
+}

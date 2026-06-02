@@ -216,14 +216,36 @@ function login() {
                     document.getElementById('msg-login').innerHTML = "La contraseña es incorrecta";
                     document.getElementById('msg-login').className = "auth-msg auth-msg--error";
                 } else {
+                    // 1. Guardamos el token inmediatamente
                     localStorage.setItem("token_JWT", result);
+                    
+                    // 2. Mostramos el SweetAlert de éxito
                     Swal.fire({
                         icon: 'success',
                         title: 'Loged successfully',
                         showConfirmButton: false,
                         timer: 2000
-                        });
-                       setTimeout(' window.location.href = "index.php?page=controller_home&op=view"; ', 2000);
+                    }).then(function() {
+                        // 3. ESTE CÓDIGO SE EJECUTA SÍ O SÍ CUANDO TERMINA EL TIMER DE REGLA
+                        var redirectRaw = localStorage.getItem('redirect_like');
+
+                        if (redirectRaw) {
+                            var redirect = redirectRaw.split(",");
+                            var id_partido = redirect[0];
+                            var lugar      = redirect[1];
+
+                            if (lugar === "details") {
+                                // Redirige manteniendo el ID del detalle en la URL
+                                window.location.href = "index.php?page=controller_shop&op=view&detalle=" + id_partido;
+                            } else {
+                                // Redirige a la lista general de la tienda
+                                window.location.href = "index.php?page=controller_shop&op=view";
+                            }
+                        } else {
+                            // Login normal sin intenciones de dar likes previos
+                            window.location.href = "index.php?page=controller_home&op=view";
+                        }
+                    });
                 }
             }).catch(function(textStatus) {
                 if (console && console.log) {
