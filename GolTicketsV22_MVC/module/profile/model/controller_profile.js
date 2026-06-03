@@ -1,9 +1,5 @@
 const MESES = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
 
-// VARIABLES GLOBALES PARA LA PAGINACIÓN DE LIKES
-let liked_limit = 3; // Número de partidos que se mostrarán por página
-let liked_offset = 0;
-
 function switchTab(tabId) {
   const tabs = ['personal', 'liked'];
 
@@ -25,10 +21,8 @@ function switchTab(tabId) {
     }
   });
 
-  // SI SE SELECCIONA LA PESTAÑA "LIKED", REINICIAMOS EL OFFSET Y CARGAMOS SUS EVENTOS
   if (tabId === 'liked') {
-    liked_offset = 0;
-    load_likes_pagination();
+      loadLikedEvents();
   }
 }
 
@@ -55,30 +49,110 @@ function updateProfile() {
     }
 }
 
-function validate_updateProfile() {
-    var error = false;
-    var username = document.getElementById('reg-username').value;
-    var username_exp = /^[a-zA-Z0-9_]{5,20}$/;
-    var msgBox = document.getElementById('msg-register');
+$(document).ready(function () {
+    if (document.getElementById('reg-username') || $('.sidebar-username').length > 0) {
+        loadUserProfile();
+    }
 
+    // EVENTO PARA LOS BOTONES DE EDICIÓN INDEPENDIENTES
+    $(document).on('click', '.btn-inline-edit', function() {
+        var button = $(this);
+        var targetField = button.data('target'); // Sabe si es "username" o "password"
+        var input = $('#reg-' + targetField);
+        
+        // Si el input está bloqueado, pasamos a MODO EDICIÓN
+        if (input.prop('readonly')) {
+            input.prop('readonly', false); // Permitimos escribir
+            input.addClass('input-editing-mode'); // Estilo visual de edición
+            input.focus(); // Colocamos el cursor automáticamente
+            
+            // Cambiamos el icono del botón por un Checkmark de guardar
+            button.html('<span class="material-symbols-outlined">check</span>');
+            button.addClass('btn-inline-save');
+        } 
+        // Si el input ya estaba editable, significa que el usuario pulsó el Check para GUARDAR
+        else {
+            // Validamos antes de enviar al servidor
+            if (validate_single_field(targetField, input.val())) {
+                
+                var token = localStorage.getItem('token_JWT');
+                // Serializamos solo el campo específico que estamos modificando junto con el token
+                var data = 'token=' + token + '&' + input.attr('name') + '=' + encodeURIComponent(input.val());
+
+                ajaxPromise('index.php?page=controller_profile&op=update_account', 'POST', 'JSON', data)
+                    .then(function(result) {
+                        var msgBox = document.getElementById('msg-register');
+                        
+                        if (result === "success") {
+                            msgBox.innerHTML = "Campo " + targetField + " actualizado.";
+                            msgBox.className = "auth-msg auth-msg--success";
+                            
+                            // Bloqueamos el input de nuevo
+                            input.prop('readonly', true);
+                            input.removeClass('input-editing-mode');
+                            
+                            // Restauramos el botón al icono original de lapicero
+                            button.html('<span class="material-symbols-outlined">edit</span>');
+                            button.removeClass('btn-inline-save');
+                            
+                            if(targetField === 'password') {
+                                input.val(''); // Limpiamos visualmente el hash si fue contraseña
+                            }
+                            
+                            // Recargamos datos de la interfaz (Navbar, Sidebars...)
+                            loadUserProfile();
+                        } else if (result === "no_changes") {
+                            // Si guardó el mismo valor sin cambiar nada
+                            input.prop('readonly', true);
+                            input.removeClass('input-editing-mode');
+                            button.html('<span class="material-symbols-outlined">edit</span>');
+                            button.removeClass('btn-inline-save');
+                        } else {
+                            msgBox.innerHTML = "Error al actualizar el campo.";
+                            msgBox.className = "auth-msg auth-msg--error";
+                        }
+                    }).catch(function(err) {
+                        console.log("Error crítico en la actualización inline: ", err);
+                    });
+            }
+        }
+    });
+});
+
+// Función de validación enfocada por campos individuales
+function validate_single_field(field, value) {
+    var msgBox = document.getElementById('msg-register');
     msgBox.innerHTML = "";
     msgBox.className = "auth-msg";
 
-    if (username.length === 0) {
-        msgBox.innerHTML = "Tienes que escribir el usuario";
-        msgBox.className = "auth-msg auth-msg--error";
-        error = true;
-    } else if (username.length < 5) {
-        msgBox.innerHTML = "El username tiene que tener 5 caracteres como mínimo";
-        msgBox.className = "auth-msg auth-msg--error";
-        error = true;
-    } else if (!username_exp.test(username)) {
-        msgBox.innerHTML = "No se pueden poner caracteres especiales en el usuario";
-        msgBox.className = "auth-msg auth-msg--error";
-        error = true;
+    if (field === 'username') {
+        var username_exp = /^[a-zA-Z0-9_]{5,20}$/;
+        if (value.trim().length < 5) {
+            msgBox.innerHTML = "El username debe tener al menos 5 caracteres.";
+            msgBox.className = "auth-msg auth-msg--error";
+            return false;
+        }
+        if (!username_exp.test(value)) {
+            msgBox.innerHTML = "El usuario no admite caracteres especiales.";
+            msgBox.className = "auth-msg auth-msg--error";
+            return false;
+        }
     }
 
-    return !error;
+    if (field === 'password') {
+        var passwd_exp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}$/;
+        if (value.length < 8) {
+            msgBox.innerHTML = "La contraseña debe tener mínimo 8 caracteres.";
+            msgBox.className = "auth-msg auth-msg--error";
+            return false;
+        }
+        if (!passwd_exp.test(value)) {
+            msgBox.innerHTML = "La contraseña requiere mayúsculas, minúsculas y un carácter especial.";
+            msgBox.className = "auth-msg auth-msg--error";
+            return false;
+        }
+    }
+    return true;
 }
 
 function loadUserProfile() {
@@ -118,125 +192,85 @@ function loadUserProfile() {
         });
 }
 
-// ==========================================
-//  FUNCIONES NUEVAS PARA PAGINACIÓN DE LIKES
-// ==========================================
-
-function load_likes_pagination() {
+function loadLikedEvents() {
     var token = localStorage.getItem('token_JWT');
     if (!token) {
-        console.log("No se encontró el token JWT en LocalStorage.");
+        console.log("No se encontró ningún token JWT en localStorage");
         return;
     }
 
-    // Apuntamos correctamente a tu controller_profile
-    ajaxPromise('index.php?page=controller_profile&op=count_likes_user', 'POST', 'JSON', { 'token': token })
+    ajaxPromise('module/profile/controller/controller_profile.php?op=get_liked_events', 'POST', 'JSON', { 'token': token })
         .then(function(data) {
-            if (data && typeof data.contador !== 'undefined') {
-                let total_likes = parseInt(data.contador);
-                if (total_likes > 0) {
-                    load_liked_events(token, total_likes);
-                } else {
-                    $('.matches-grid').html('<p class="text-dim">Aún no tienes partidos añadidos a tu lista de favoritos.</p>');
-                    $('#liked-pagination').html('');
-                }
-            } else {
-                $('.matches-grid').html('<p class="text-dim">Aún no tienes partidos añadidos a tu lista de favoritos.</p>');
-                $('#liked-pagination').html('');
-            }
-        }).catch(function(err) {
-            console.log("Error al procesar la petición de conteo:", err);
-        });
-}
+            // Revisa qué imprime esto en la consola F12 para ver el mensaje de error real del servidor
+            console.log("Datos recibidos del servidor:", data);
 
-function load_liked_events(token, total_likes) {
-    var data = {
-        'token': token,
-        'limit': liked_limit,
-        'offset': liked_offset
-    };
+            var container = $('#containerLikedEvents');
+            container.empty();
 
-    // Apuntamos correctamente a tu controller_profile
-    ajaxPromise('index.php?page=controller_profile&op=load_likes_user_paginated', 'POST', 'JSON', data)
-        .then(function(partidos) {
-            if (partidos === 'error' || !partidos.length) {
-                $('.matches-grid').html('<p class="text-dim">Error al cargar favoritos.</p>');
+            // CORRECCIÓN: Validamos si viene un error de backend o si el objeto NO es un array
+            if (!data || data.status === 'error' || !Array.isArray(data) || data.length === 0) {
+                console.log("No se pueden procesar las cards (datos vacíos o estructura de error):", data.message || "Sin mensaje");
+                container.append('<p class="no-likes-msg">No has dado "Me gusta" a ningún partido todavía o ha ocurrido un problema.</p>');
                 return;
             }
-            
-            let html = '';
-            partidos.forEach(function(p) {
-                let img = (p.imgs_partido && p.imgs_partido.length > 0) ? p.imgs_partido[0] : 'view/img/default-match.jpg';
-                
-                // Formateador de Fechas
-                let dateParts = p.fecha_partido.split("-");
-                let monthIdx = parseInt(dateParts[1], 10) - 1;
-                let monthName = MESES[monthIdx] || 'SET';
-                let day = dateParts[2];
 
-                html += `
-                    <div class="match-card profile-match-card redirect-details" data-id="${p.id_partido}" id="match-${p.id_partido}" style="cursor: pointer;">
-                        <div class="match-img-wrapper">
-                            <img src="${img}" alt="${p.nombre_partido}">
-                            <div class="match-date-badge">
-                                <span class="match-date-day">${day}</span>
-                                <span class="match-date-month">${monthName}</span>
+            // Si pasa el filtro, ahora sí es un Array seguro y no lanzará 'data.forEach is not a function'
+            data.forEach(function(p) {
+                const f = p.fecha_partido.split('-');
+                const mes = MESES[parseInt(f[1]) - 1]; 
+
+                let slidesHTML = '';
+                if (p.imgs_partido && p.imgs_partido.length > 0) {
+                    p.imgs_partido.forEach(function(img) {
+                        slidesHTML += `<div class="swiper-slide"><img src="${img}" alt="${p.nombre_partido}"/></div>`;
+                    });
+                } else {
+                    slidesHTML = `<div class="swiper-slide"><img src="${p.img_campo}" alt="${p.nombre_partido}"/></div>`;
+                }
+
+                $('<div></div>').attr({ 'id': 'liked-' + p.id_partido, 'class': 'partido-card' }).appendTo(container)
+                    .html(`
+                        <div class="swiper partido-card-swiper" id="swiper-liked-${p.id_partido}">
+                            <div class="swiper-wrapper">${slidesHTML}</div>
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"></div>
+                            <div class="partido-fecha">
+                                <span class="partido-fecha-dia">${f[2]}</span>
+                                <span class="partido-fecha-mes">${mes}</span>
+                                <span class="partido-fecha-anyo">${f[0]}</span>
+                            </div>
+                            <div class="partido-precio-badge">${p.precio}€</div>
+                        </div>
+                        <div class="partido-card-body">
+                            <p class="partido-nombre">${p.nombre_partido}</p>
+                            <div class="partido-meta">
+                                <span class="partido-meta-item">
+                                    <span class="material-symbols-outlined">stadium</span>
+                                    ${p.nombre_campo}
+                                </span>
+                                <span class="partido-meta-item">
+                                    <span class="material-symbols-outlined">location_on</span>
+                                    ${p.nombre_ciudad}
+                                </span>
+                            </div>
+                            <span class="partido-badge">${p.nombre_competicion}</span>
+                            <div class="partido-card-footer">
+                                <button class="btn-tickets" onclick="window.location.href='index.php?page=controller_shop&op=view&detalle=${p.id_partido}'">Ver entradas</button>
                             </div>
                         </div>
-                        <div class="match-info">
-                            <span class="match-competicion">${p.nombre_competicion}</span>
-                            <h4>${p.nombre_partido}</h4>
-                            <p class="match-lugar">
-                                <span class="material-symbols-outlined">location_on</span> 
-                                ${p.nombre_campo}, ${p.nombre_ciudad}
-                            </p>
-                        </div>
-                    </div>
-                `;
+                    `);
+
+                new Swiper(`#swiper-liked-${p.id_partido}`, {
+                    speed: 500,
+                    loop: p.imgs_partido && p.imgs_partido.length > 1,
+                    slidesPerView: 1,
+                    navigation: {
+                        prevEl: `#swiper-liked-${p.id_partido} .swiper-button-prev`,
+                        nextEl: `#swiper-liked-${p.id_partido} .swiper-button-next`,
+                    }
+                });
             });
-            
-            $('.matches-grid').html(html);
-            build_liked_pagination(total_likes);
         }).catch(function(err) {
-            console.log("Error cargando eventos gustados:", err);
+            console.error("Error crítico en la promesa de eventos liked:", err);
         });
 }
-
-function build_liked_pagination(total_likes) {
-    let total_pages = Math.ceil(total_likes / liked_limit);
-    let current_page = (liked_offset / liked_limit) + 1;
-    
-    // Cambiamos a la clase 'pagination' idéntica a tu modulo tienda para heredar sus estilos perfectos
-    let html_pag = '<div class="pagination">';
-
-    for (let i = 1; i <= total_pages; i++) {
-        let active_class = (i === current_page) ? 'active' : '';
-        html_pag += `<button class="page-btn ${active_class}" data-page="${i}">${i}</button>`;
-    }
-    html_pag += '</div>';
-
-    $('#liked-pagination').html(html_pag);
-}
-
-// COLOQUEMOS LOS ESCUCHADORES DE EVENTOS
-$(document).ready(function () {
-    loadUserProfile();
-
-    // 1. Cambiar de página en favoritos
-    $(document).on('click', '#liked-pagination .page-btn', function() {
-        let page = $(this).data('page');
-        liked_offset = (page - 1) * liked_limit;
-        
-        var token = localStorage.getItem('token_JWT');
-        if (token) {
-            load_likes_pagination();
-        }
-    });
-
-    // 2. Redirección al detalle del partido en la tienda al hacer click en la tarjeta
-    $(document).on('click', '.redirect-details', function() {
-        let id_partido = $(this).data('id');
-        // Redirige pasándole el parámetro 'detalle' por URL como espera tu tienda
-        window.location.href = "index.php?page=controller_shop&op=view&detalle=" + id_partido;
-    });
-});

@@ -62,41 +62,36 @@ class DAOProfile {
         return $res;
     }
 
-    public function count_likes_user($username) {
-        $sql = "SELECT COUNT(*) AS contador 
-                FROM likes_usuario l
-                JOIN users u ON l.id_usuario = u.id_usuario
-                WHERE u.username = :username";
-        $conexion = connect::con();
-        $stmt = $conexion->prepare($sql);
-        $stmt->bindValue(':username', $username, PDO::PARAM_STR);
-        $stmt->execute();
-        $res = $stmt->fetch(PDO::FETCH_ASSOC);
-        connect::close($conexion);
-        return $res;
-    }
-
-    public function select_load_likes_paginated($username, $limit, $offset) {
-        $sql = "SELECT p.*, c.nombre_campo, co.nombre_competicion, ci.nombre_ciudad 
+    // Obtener los eventos que le gustan a un usuario específico
+    public function select_liked_events($username) {
+        $sql = "SELECT DISTINCT p.id_partido, p.nombre_partido, p.precio, p.fecha_partido,
+                        c.nombre_campo, c.img_campo, co.nombre_competicion, ci.nombre_ciudad
                 FROM likes_usuario l
                 JOIN users u         ON l.id_usuario     = u.id_usuario
                 JOIN partido p       ON l.id_partido     = p.id_partido
                 JOIN campo c         ON p.id_campo       = c.id_campo
                 JOIN competicion co  ON p.id_competicion = co.id_competicion
                 JOIN ciudad ci       ON c.id_ciudad      = ci.id_ciudad
-                WHERE u.username = :username
-                ORDER BY p.fecha_partido DESC
-                LIMIT :limit OFFSET :offset";
-                
+                WHERE u.username = :username OR u.mail = :username";
+
         $conexion = connect::con();
         $stmt = $conexion->prepare($sql);
-        $stmt->bindValue(':username', $username, PDO::PARAM_STR);
-        // CRÍTICO: bindValue con PARAM_INT evita que MySQL reciba un string con comillas '3'
-        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->bindValue(':username', $username);
         $stmt->execute();
         
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Opcional: Si quieres recuperar también la primera imagen de cada partido 
+        // de la tabla 'img_partido' para los Swipers/Imágenes de la Card
+        foreach ($res as $key => $partido) {
+            $sql_img = "SELECT img FROM img_partido WHERE id_partido = :id_partido";
+            $stmt_img = $conexion->prepare($sql_img);
+            $stmt_img->bindValue(':id_partido', $partido['id_partido'], PDO::PARAM_INT);
+            $stmt_img->execute();
+            $imgs = $stmt_img->fetchAll(PDO::FETCH_COLUMN);
+            $res[$key]['imgs_partido'] = $imgs ? $imgs : [];
+        }
+
         connect::close($conexion);
         return $res;
     }

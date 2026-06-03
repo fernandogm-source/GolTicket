@@ -4,6 +4,7 @@ include($path . "module/profile/model/DAOProfile.php");
 include($path . "model/middleware_auth.php");
 
 @session_start();
+$_SESSION['tiempo'] = time();
 
 $op = $_GET['op'] ?? 'view';
 
@@ -114,69 +115,51 @@ switch ($op) {
         }
         break;
 
-    case 'count_likes_user':
-        ob_clean();
+    case 'get_liked_events':
         header('Content-Type: application/json');
+        
         try {
-            $token = $_POST['token'] ?? '';
-            $json = decode_token($token);
-            
-            if (!$json || !isset($json['username'])) {
-                echo json_encode(["contador" => 0, "status" => "error_token"]);
+            if (!isset($_POST['token']) || empty($_POST['token'])) {
+                echo json_encode(["status" => "error", "message" => "No token provided"]);
                 exit;
             }
 
-            // Llamamos al método correcto dentro de tu DAO de perfil
-            $daoProfile = new DAOProfile();
-            $rdo = $daoProfile->count_likes_user($json['username']); 
+            // Decodificamos el token JWT
+            $token_dec = decode_token($_POST['token']);
             
-            if ($rdo && isset($rdo['contador'])) {
+            if (!$token_dec) {
+                echo json_encode(["status" => "error", "message" => "Token decoding failed"]);
+                exit;
+            }
+
+            // Extraer el username de forma segura (sea Array u Objeto)
+            $username = null;
+            if (is_array($token_dec) && isset($token_dec['username'])) {
+                $username = $token_dec['username'];
+            } elseif (is_object($token_dec) && isset($token_dec->username)) {
+                $username = $token_dec->username;
+            }
+
+            // Si no se encuentra el username en ninguna de las dos estructuras
+            if (!$username) {
+                echo json_encode(["status" => "error", "message" => "Username not found in token payload"]);
+                exit;
+            }
+
+            // Instanciamos el modelo y cargamos los eventos pasándole el usuario limpio
+            $daoProfile = new DAOProfile();
+            $rdo = $daoProfile->select_liked_events($username);
+
+            // Si no hay filas o da falso, devolvemos un array vacío compatible con .length de JS
+            if (!$rdo || !is_array($rdo)) {
+                echo json_encode([]);
+            } else {
                 echo json_encode($rdo);
-            } else {
-                echo json_encode(["contador" => 0]);
             }
+            exit;
         } catch (Exception $e) {
-            echo json_encode(["contador" => 0, "error" => $e->getMessage()]);
+            echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+            exit;
         }
-        exit;
-        break;
-
-    case 'load_likes_user_paginated':
-        ob_clean();
-        header('Content-Type: application/json');
-        try {
-            $token = $_POST['token'] ?? '';
-            $json = decode_token($token);
-            
-            if (!$json || !isset($json['username'])) {
-                echo json_encode([]);
-                exit;
-            }
-
-            $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 3;
-            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
-            
-            // 1. Cargamos la información del partido usando tu DAOProfile
-            $daoProfile = new DAOProfile();
-            $partidos = $daoProfile->select_load_likes_paginated($json['username'], $limit, $offset);
-            
-            if (is_array($partidos)) {
-                // 2. Cargamos el DAO de la tienda SOLAMENTE para extraer las imágenes secundarias
-                $path = $_SERVER['DOCUMENT_ROOT'] . '/GolTicketsV22_MVC/';
-                include_once($path . "module/shop/model/DAO_shop.php");
-                $daoShop = new DAOShop();
-
-                foreach ($partidos as $key => $partido) {
-                    $imgs = $daoShop->select_img_partido($partido['id_partido']);
-                    $partidos[$key]['imgs_partido'] = array_column($imgs, 'ruta_img');
-                }
-                echo json_encode($partidos);
-            } else {
-                echo json_encode([]);
-            }
-        } catch (Exception $e) {
-            echo json_encode([]);
-        }
-        exit;
         break;
 }
