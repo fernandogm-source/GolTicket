@@ -396,10 +396,10 @@ WiFi · Baños · Parada de Autobús · Asistencia médica · Parking · Restaur
 
 ![home](https://github.com/user-attachments/assets/1f1838c7-b8e6-4944-9679-113c4b07dd29)
 
-![shop](<img width="1901" height="904" alt="Captura de pantalla 2026-06-03 171238" src="https://github.com/user-attachments/assets/e787cec9-bae1-4412-95d7-b5bd87a9172d" />)
+![shop](https://github.com/user-attachments/assets/e787cec9-bae1-4412-95d7-b5bd87a9172d)
 
 ![detail](https://github.com/user-attachments/assets/475902cc-79e4-4aa2-8442-7c7a796073dd)
 
-![auth](<img width="1919" height="904" alt="Captura de pantalla 2026-06-03 171152" src="https://github.com/user-attachments/assets/e0a973b2-7b7a-4013-beb1-0b6ee15d2776" />)
+![auth](https://github.com/user-attachments/assets/e0a973b2-7b7a-4013-beb1-0b6ee15d2776)
 
-![profile](<img width="1901" height="904" alt="Captura de pantalla 2026-06-03 171238" src="https://github.com/user-attachments/assets/463da9a0-7e09-4a88-bb90-cc92fe55cbde" />)
+![profile](https://github.com/user-attachments/assets/463da9a0-7e09-4a88-bb90-cc92fe55cbde)
