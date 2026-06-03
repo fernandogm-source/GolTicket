@@ -396,7 +396,7 @@ WiFi · Baños · Parada de Autobús · Asistencia médica · Parking · Restaur
 
 ![home](https://github.com/user-attachments/assets/1f1838c7-b8e6-4944-9679-113c4b07dd29)
 
-![shop](https://github.com/user-attachments/assets/e787cec9-bae1-4412-95d7-b5bd87a9172d)
+![shop](https://github.com/user-attachments/assets/0c729bf2-fe27-47f3-bae6-ad1135313f0f)
 
 ![detail](https://github.com/user-attachments/assets/475902cc-79e4-4aa2-8442-7c7a796073dd)
 
